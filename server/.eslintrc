@@ -1,0 +1,13 @@
+{
+    "extends": ["airbnb-base", "prettier"],
+    "parser": "babel-eslint",
+    "rules": {
+        "no-console": 0,
+        "no-underscore-dangle": 0,
+        "camelcase": 0,
+        "no-unused-vars": 0,
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "indent": ["error", 4]
+    }
+  }
