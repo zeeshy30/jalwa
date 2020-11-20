@@ -7,20 +7,25 @@ import {
     requestCodeValidator,
     verifyCodeValidator,
     updateUserValidator,
+
+    addProductValidator
 } from '../validator';
 
-import UserTC from '../module';
+import TC from '../module';
 
 schemaComposer.Query.addFields({
-    user: UserTC.getResolver('user', [isAuth])
+    user: TC.UserTC.getResolver('user', [isAuth]),
+    products: TC.ProductTC.getResolver('products')
 });
 
 schemaComposer.Mutation.addFields({
-    signIn: UserTC.getResolver('signIn', [isGuest, verifyCodeValidator]),
-    signUp: UserTC.getResolver('signUp', [isGuest, verifyCodeValidator]),
-    requestCode: UserTC.getResolver('requestCode', [requestCodeValidator]),
-    logout: UserTC.getResolver('logout', [isAuth]),
-    updateUser: UserTC.getResolver('updateUser', [isAuth, updateUserValidator]),
+    signIn: TC.UserTC.getResolver('signIn', [isGuest, verifyCodeValidator]),
+    signUp: TC.UserTC.getResolver('signUp', [isGuest, verifyCodeValidator]),
+    requestCode: TC.UserTC.getResolver('requestCode', [requestCodeValidator]),
+    logout: TC.UserTC.getResolver('logout', [isAuth]),
+    updateUser: TC.UserTC.getResolver('updateUser', [isAuth, updateUserValidator]),
+
+    addProduct: TC.ProductTC.getResolver('addProduct', [addProductValidator])
 });
 
 const schema = schemaComposer.buildSchema();
