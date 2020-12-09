@@ -16,6 +16,48 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <TextView
+        android:id="@+id/vendor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mehran's Jewelers"
+        android:textColor="@color/white"
+        android:paddingVertical="7dp"
+        android:paddingHorizontal="10dp"
+        android:letterSpacing="0.05"
+        android:background="@drawable/ic_background_black_round_with_opacity"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="@id/floatingButton"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <include
+        android:id="@+id/shoppingCart"
+        layout="@layout/shopping_cart_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="70dp"
+        app:layout_constraintEnd_toEndOf="@id/floatingButton"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <include
+        android:id="@+id/favouriteButton"
+        layout="@layout/favourite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@id/shareButton"
+        app:layout_constraintEnd_toEndOf="@id/floatingButton" />
+
+    <include
+        android:id="@+id/shareButton"
+        layout="@layout/share_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@id/floatingButton"
+        app:layout_constraintEnd_toEndOf="@id/floatingButton" />
+
     <LinearLayout
         android:id="@+id/floatingButton"
         android:layout_width="match_parent"
@@ -48,6 +90,7 @@
                 android:text="Star moon shaped necklace - 100% lskmv lksdmfvlkm lsdmv"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:letterSpacing="0.01"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,6 +102,7 @@
                 android:fontFamily="sans-serif-black"
                 android:textSize="16sp"
                 android:textColor="@color/black"
+                android:letterSpacing="0.02"
                 app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productTitle"
@@ -69,7 +113,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Buy Now"
-                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:textSize="14sp"
                 android:textColor="@color/white"
                 android:background="@drawable/ic_background_blue_round"
                 app:layout_constraintStart_toStartOf="parent"
