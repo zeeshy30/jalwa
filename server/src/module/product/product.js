@@ -17,9 +17,20 @@ const productSchema = new Schema(
             type: String,
             required: true,
         },
-        type: String,
+        type: {
+            type: String,
+            required: true,
+        },
         tags: [String],
-        videoUrl :{
+        price: {
+            type: String,
+            required: true,
+        },
+        photoUrl: {
+            type: String,
+            required: true,
+        },
+        videoUrl: {
             type: String,
             required: true,
         },

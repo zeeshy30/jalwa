@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.jalwa.FirstFragment"
+        android:name="com.example.jalwa.ui.main.view.ProductView"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/product_view_page">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

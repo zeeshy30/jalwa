@@ -27,7 +27,7 @@ class UserValidator {
             return Promise.reject(new Error('Error: phoneNumber'));
         }
 
-        if (!validator.isLength(code, { min: 4 })) {
+        if (!validator.isLength(code, { min: 4, max: 4 })) {
             return Promise.reject(new Error('Error: code'));
         }
 
