@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.example.jalwa.ProductsQuery
 import com.example.jalwa.R
+import com.example.jalwa.ui.main.adapter.CategoriesRecyclerViewAdapter
 import com.example.jalwa.ui.main.adapter.ProductsRecyclerViewAdapter
 import com.example.jalwa.ui.main.viewmodel.ProductViewModel
 import org.koin.android.ext.android.inject
@@ -22,13 +23,8 @@ import org.koin.android.ext.android.inject
 
 class ProductView : Fragment() {
     val viewModel: ProductViewModel by inject()
-    private lateinit var adapter: ProductsRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
-//    private lateinit var videoView: VideoView
-//    private lateinit var imageView: ImageView
-//    private lateinit var title: TextView
-
-//    private lateinit var adapter: ProductsRecyclerViewAdapter
+    private lateinit var categoriesRecyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +36,7 @@ class ProductView : Fragment() {
 
     private fun findViews(view: View) {
         recyclerView = view.findViewById(R.id.videoViews)
+        categoriesRecyclerView = view.findViewById(R.id.categories)
 
 //        imageView = view.findViewById(R.id.productImage)
 //        videoView = view.findViewById(R.id.videoView)
@@ -48,9 +45,6 @@ class ProductView : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findViews(view)
-        val imageUrl = "https://upload.wikimedia.org/wikipedia/commons/9/91/F-15_vertical_deploy.jpg"
-        val path =
-                "https://firebasestorage.googleapis.com/v0/b/jalwa-8f0c1.appspot.com/o/VIDEO-2020-11-22-12-44-07.mp4?alt=media&token=4bd94395-f754-4bc9-85ad-ac4a043db286";
 
         viewModel.productsObservable.observe(viewLifecycleOwner, { result ->
             recyclerView.apply {
@@ -62,6 +56,18 @@ class ProductView : Fragment() {
             val snapHelper: SnapHelper = LinearSnapHelper()
             snapHelper.attachToRecyclerView(recyclerView)
         })
+        val list = ArrayList<String>()
+        list.add("All")
+        list.add("Men's Wear")
+        list.add("Women's Wear")
+        list.add("Shoes")
+
+        categoriesRecyclerView.apply {
+            adapter = CategoriesRecyclerViewAdapter(
+                activity as Activity,
+                list
+            )
+        }
     }
 
 }

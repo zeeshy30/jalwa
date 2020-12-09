@@ -4,29 +4,28 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jalwa.ProductsQuery
 import com.example.jalwa.R
 
-class ProductsRecyclerViewAdapter(private val context: Context, private val products: ArrayList<ProductsQuery.Product>) :
+class CategoriesRecyclerViewAdapter(private val context: Context, private val categories: ArrayList<String>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int {
-        return products.size
+        return categories.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.product_view_page,
+            R.layout.category_button,
             parent,
             false
         )
-        return ViewHolderProductsRecyclerView(view)
+        return ViewHolderCategoriesRecyclerView(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val product = products[position]
-        val obj = holder as ViewHolderProductsRecyclerView?
-        obj?.bind(context, product)
+        val category = categories[position]
+        val obj = holder as ViewHolderCategoriesRecyclerView?
+        obj?.bind(category)
     }
 
 }

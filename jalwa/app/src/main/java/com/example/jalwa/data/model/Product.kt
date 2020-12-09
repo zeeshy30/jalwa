@@ -13,7 +13,10 @@ data class Product (
         val vendor: String,
         val type: String,
         val tags: List<String>,
+        val price: String,
 
+        @SerializedName("photoUrl")
+        val photoURL: String,
         @SerializedName("videoUrl")
         val videoURL: String
 ) : Serializable
