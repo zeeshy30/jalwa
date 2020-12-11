@@ -53,6 +53,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     private lateinit var options1: AutoFillRecyclerView
     private lateinit var options2: AutoFillRecyclerView
 
+    override fun getTheme() = R.style.BottomSheetDialogTheme
 
     override fun onCreateView(
         inflater: LayoutInflater,
