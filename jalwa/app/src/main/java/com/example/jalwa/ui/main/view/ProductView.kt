@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -37,11 +38,8 @@ class ProductView : Fragment() {
     private fun findViews(view: View) {
         recyclerView = view.findViewById(R.id.videoViews)
         categoriesRecyclerView = view.findViewById(R.id.categories)
-
-//        imageView = view.findViewById(R.id.productImage)
-//        videoView = view.findViewById(R.id.videoView)
-//        title = view.findViewById(R.id.productTitle)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findViews(view)

@@ -98,7 +98,7 @@
                 android:id="@+id/productPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rs. 1150"
+                android:text="@string/rs_1150"
                 android:fontFamily="sans-serif-black"
                 android:textSize="16sp"
                 android:textColor="@color/black"
@@ -106,13 +106,13 @@
                 app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productTitle"
-                app:layout_constraintBottom_toTopOf="@id/BuyNow"/>
+                app:layout_constraintBottom_toTopOf="@id/buyNowProduct"/>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BuyNow"
+                android:id="@+id/buyNowProduct"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Buy Now"
+                android:text="@string/buy_now"
                 android:letterSpacing="0.1"
                 android:textSize="14sp"
                 android:textColor="@color/white"
