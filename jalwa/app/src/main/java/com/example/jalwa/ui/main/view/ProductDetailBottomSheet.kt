@@ -7,9 +7,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.fragment.findNavController
+import com.example.jalwa.R
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jalwa.R
 import com.example.jalwa.ui.main.adapter.OptionsRecyclerViewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -52,6 +54,8 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     }
     private lateinit var options1: AutoFillRecyclerView
     private lateinit var options2: AutoFillRecyclerView
+    private lateinit var buyNow: AppCompatButton
+    private lateinit var addToCart: AppCompatButton
 
     override fun getTheme() = R.style.BottomSheetDialogTheme
 
@@ -66,12 +70,25 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     private fun findViews(view: View) {
         options1 = view.findViewById(R.id.options1)
         options2 = view.findViewById(R.id.options2)
+        addToCart = view.findViewById(R.id.addToCart)
+        buyNow = view.findViewById(R.id.buyNow)
     }
 
+    private fun clickListener() {
+        buyNow.setOnClickListener {
+            this.dismiss()
+            findNavController().navigate(R.id.action_login_signup_page, Bundle())
+        }
+        addToCart.setOnClickListener {
+            this.dismiss()
+            findNavController().navigate(R.id.action_login_signup_page, Bundle())
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findViews(view)
+        clickListener()
 
 //        viewModel.productsObservable.observe(viewLifecycleOwner, { result ->
 //            recyclerView.apply {

@@ -3,26 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ProductView">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/ProductView"
         android:name="com.example.jalwa.ui.main.view.ProductView"
-        android:label="@string/first_fragment_label"
+        android:label="Product Page"
         tools:layout="@layout/product_view_page">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_login_signup_page"
+            app:destination="@id/LoginSingupView" />
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.jalwa.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/LoginSingupView"
+        android:name="com.example.jalwa.ui.main.view.LoginSingupView"
+        android:label="Login Signup Page"
+        tools:layout="@layout/login_signup_page">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_back_button"
+            app:destination="@id/ProductView" />
+
+        <action
+            android:id="@+id/action_verify_number"
+            app:destination="@id/VerifyAccount" />
     </fragment>
+
+    <fragment
+        android:id="@+id/VerifyAccount"
+        android:name="com.example.jalwa.ui.main.view.LoginSingupView"
+        android:label="Verify Account"
+        tools:layout="@layout/verify_account_page">
+
+        <action
+            android:id="@+id/action_back_button"
+            app:destination="@id/LoginSingupView" />
+    </fragment>
+
 </navigation>
