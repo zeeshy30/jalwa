@@ -15,6 +15,8 @@ import com.example.jalwa.R
 import com.example.jalwa.ui.main.adapter.CategoriesRecyclerViewAdapter
 import com.example.jalwa.ui.main.adapter.ProductsRecyclerViewAdapter
 import com.example.jalwa.ui.main.viewmodel.ProductViewModel
+import com.example.jalwa.utils.PlayerViewAdapter
+import com.example.jalwa.utils.RecyclerViewScrollListener
 import org.koin.android.ext.android.inject
 
 
@@ -26,6 +28,7 @@ class ProductView : Fragment() {
     val viewModel: ProductViewModel by inject()
     private lateinit var recyclerView: RecyclerView
     private lateinit var categoriesRecyclerView: RecyclerView
+    private lateinit var scrollListener: RecyclerViewScrollListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +47,7 @@ class ProductView : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         findViews(view)
 
-        viewModel.productsObservable.observe(viewLifecycleOwner, { result ->
+        viewModel.productsObservable.observe(viewLifecycleOwner, {
             recyclerView.apply {
                 adapter = ProductsRecyclerViewAdapter(
                     activity as Activity,
@@ -53,6 +56,14 @@ class ProductView : Fragment() {
             }
             val snapHelper: SnapHelper = LinearSnapHelper()
             snapHelper.attachToRecyclerView(recyclerView)
+            scrollListener = object : RecyclerViewScrollListener() {
+                override fun onItemIsFirstVisibleItem(index: Int) {
+                    if (index != -1)
+                        PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
+                }
+
+            }
+            recyclerView.addOnScrollListener(scrollListener)
         })
         val list = ArrayList<String>()
         list.add("All")
@@ -66,6 +77,21 @@ class ProductView : Fragment() {
                 list
             )
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        PlayerViewAdapter.pauseCurrentPlayingVideo()
+    }
+
+//    override fun onResume() {
+//        super.onResume()
+////        PlayerViewAdapter.()
+//    }
+
+    override fun onStop() {
+        super.onStop()
+        PlayerViewAdapter.releaseAllPlayers()
     }
 
 }

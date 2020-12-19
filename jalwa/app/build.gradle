@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id("com.apollographql.apollo").version("2.2.0")
 }
 
@@ -31,6 +32,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
     }
 }
 
@@ -68,6 +73,9 @@ dependencies {
 
     //image loading
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //video dependencies
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
 
     // UI dependencies
     implementation "androidx.recyclerview:recyclerview:1.1.0"
