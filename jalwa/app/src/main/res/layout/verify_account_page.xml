@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/backButton"
@@ -32,7 +32,7 @@
         android:id="@+id/enterPinText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter PIN code sent to +92XXXXXXXXXX"
+        android:text="@string/enter_pin_code_sent_to_92xxxxxxxxxx"
         android:textSize="15dp"
         android:textColor="@color/dark_grey"
         android:layout_marginTop="50dp"
@@ -46,10 +46,13 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textStyle="bold"
+        android:maxLength="1"
+        android:inputType="number"
         android:background="@drawable/ic_background_only_border_blue_round"
         app:layout_constraintTop_toBottomOf="@id/enterPinText"
         app:layout_constraintRight_toLeftOf="@id/secondDigit"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="1"/>
 
     <EditText
         android:id="@+id/secondDigit"
@@ -58,10 +61,13 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textStyle="bold"
+        android:maxLength="1"
+        android:inputType="number"
         android:background="@drawable/ic_background_only_border_blue_round"
         app:layout_constraintTop_toBottomOf="@id/enterPinText"
         app:layout_constraintRight_toLeftOf="@id/thirdDigit"
-        app:layout_constraintLeft_toRightOf="@id/firstDigit" />
+        app:layout_constraintLeft_toRightOf="@id/firstDigit"
+        tools:text="2"/>
 
     <EditText
         android:id="@+id/thirdDigit"
@@ -70,10 +76,13 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textStyle="bold"
+        android:maxLength="1"
+        android:inputType="number"
         android:background="@drawable/ic_background_only_border_blue_round"
         app:layout_constraintTop_toBottomOf="@id/enterPinText"
         app:layout_constraintRight_toLeftOf="@id/fourthDigit"
-        app:layout_constraintLeft_toRightOf="@id/secondDigit" />
+        app:layout_constraintLeft_toRightOf="@id/secondDigit"
+        tools:text="3"/>
 
     <EditText
         android:id="@+id/fourthDigit"
@@ -82,10 +91,13 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textStyle="bold"
+        android:maxLength="1"
+        android:inputType="number"
         android:background="@drawable/ic_background_only_border_blue_round"
         app:layout_constraintTop_toBottomOf="@id/enterPinText"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/thirdDigit" />
+        app:layout_constraintLeft_toRightOf="@id/thirdDigit"
+        tools:text="4"/>
 
     <TextView
         android:layout_width="wrap_content"

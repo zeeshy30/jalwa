@@ -7,6 +7,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.fragment.findNavController
 import com.example.jalwa.R
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jalwa.ui.main.adapter.OptionsRecyclerViewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.squareup.picasso.Picasso
 
 
 class AutoFillRecyclerView @JvmOverloads constructor(
@@ -39,10 +42,8 @@ class AutoFillRecyclerView @JvmOverloads constructor(
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         super.onMeasure(widthSpec, heightSpec)
-        println("$columnWidth $measuredWidth columnWId")
         if (columnWidth > 0) {
             val spanCount = 1.coerceAtLeast(measuredWidth / columnWidth)
-            println("spanCount $spanCount")
             manager!!.spanCount = spanCount
         }
     }
@@ -52,6 +53,11 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     companion object {
         const val TAG = "ProductDetailBottomSheet"
     }
+//    private val title = arguments?.getString("title")
+//    private val price =
+    private lateinit var title: TextView
+    private lateinit var price: TextView
+    private lateinit var productImage: ImageView
     private lateinit var options1: AutoFillRecyclerView
     private lateinit var options2: AutoFillRecyclerView
     private lateinit var buyNow: AppCompatButton
@@ -72,6 +78,9 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
         options2 = view.findViewById(R.id.options2)
         addToCart = view.findViewById(R.id.addToCart)
         buyNow = view.findViewById(R.id.buyNow)
+        productImage = view.findViewById(R.id.productImage)
+        title = view.findViewById(R.id.productTitle)
+        price = view.findViewById(R.id.productPrice)
     }
 
     private fun clickListener() {
@@ -90,17 +99,12 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
         findViews(view)
         clickListener()
 
-//        viewModel.productsObservable.observe(viewLifecycleOwner, { result ->
-//            recyclerView.apply {
-//                adapter = ProductsRecyclerViewAdapter(
-//                    activity as Activity,
-//                    viewModel.list as ArrayList<ProductsQuery.Product>
-//                )
-//            }
-//            val snapHelper: SnapHelper = LinearSnapHelper()
-//            snapHelper.attachToRecyclerView(recyclerView)
-//        })
-
+        title.text = arguments?.getString("title")
+        val priceText = arguments?.getString("price")
+        price.text = "Rs. ${priceText}"
+        Picasso.with(context).load(arguments?.getString("photoUrl"))
+                .resize(50, 70)
+                .into(productImage)
         val list = ArrayList<String>()
         list.add("XS")
         list.add("Small")

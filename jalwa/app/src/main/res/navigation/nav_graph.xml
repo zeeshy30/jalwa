@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/VerifyAccount"
-        android:name="com.example.jalwa.ui.main.view.LoginSingupView"
+        android:name="com.example.jalwa.ui.main.view.VerifyCodeView"
         android:label="Verify Account"
         tools:layout="@layout/verify_account_page">
 

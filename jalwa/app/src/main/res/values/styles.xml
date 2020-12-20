@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-
+        <item name="behavior_peekHeight">600dp</item>
         <item name="android:background">@drawable/bottom_sheet_dialog_rounded</item>
     </style>
 

@@ -23,4 +23,5 @@
     <string name="enter_your_phone_number">Enter your phone number</string>
     <string name="verify_account">Verify Account</string>
     <string name="resend_code_60s">Resend Code : 60s</string>
+    <string name="enter_pin_code_sent_to_92xxxxxxxxxx">Enter PIN code sent to +92XXXXXXXXXX</string>
 </resources>

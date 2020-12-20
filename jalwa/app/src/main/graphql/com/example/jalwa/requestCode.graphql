@@ -1,0 +1,3 @@
+mutation requestCode($phoneNumber: String!) {
+    requestCode(phoneNumber: $phoneNumber)
+}
