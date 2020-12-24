@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -70,7 +69,7 @@ class ProductView : Fragment() {
         list.add("Men's Wear")
         list.add("Women's Wear")
         list.add("Shoes")
-
+        list.add("Pandas")
         categoriesRecyclerView.apply {
             adapter = CategoriesRecyclerViewAdapter(
                 activity as Activity,
@@ -84,14 +83,14 @@ class ProductView : Fragment() {
         PlayerViewAdapter.pauseCurrentPlayingVideo()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-////        PlayerViewAdapter.()
-//    }
+    override fun onResume() {
+        super.onResume()
+        PlayerViewAdapter.playCurrentPlayingVideo()
+    }
 
     override fun onStop() {
         super.onStop()
-        PlayerViewAdapter.releaseAllPlayers()
+        PlayerViewAdapter.pauseCurrentPlayingVideo()
     }
 
 }

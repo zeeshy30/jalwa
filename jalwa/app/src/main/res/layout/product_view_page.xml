@@ -4,26 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
     <data>
         <variable
-            name="url"
-            type="String"/>
-        <variable
             name="callback"
             type="com.example.jalwa.utils.ExoPlayerStateCallback" />
         <variable
             name="index"
             type="int" />
         <variable
-            name="title"
-            type="String" />
-        <variable
-            name="price"
-            type="String" />
-        <variable
-            name="vendorName"
-            type="String" />
-        <variable
-            name="photoUrl"
-            type="String" />
+            name="product"
+            type="com.example.jalwa.ProductsQuery.Product" />
         <variable
             name="openDetailSheet"
             type="com.example.jalwa.ui.main.adapter.ViewHolderProductsRecyclerView" />
@@ -37,7 +25,7 @@
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:video_url="@{url}"
+            app:video_url="@{product.videoUrl}"
             app:on_state_change="@{callback}"
             app:index="@{index}"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,7 +52,7 @@
             android:letterSpacing="0.05"
             android:background="@drawable/ic_background_black_round_with_opacity"
             android:layout_marginTop="70dp"
-            android:text="@{vendorName}"
+            android:text="@{product.vendor}"
             app:layout_constraintStart_toStartOf="@id/floatingButton"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Vendor"/>
@@ -112,8 +100,8 @@
                 android:id="@+id/productImage"
                 android:layout_width="70dp"
                 android:layout_height="100dp"
-                app:photoUrl="@{photoUrl}"
-                android:background="@drawable/ic_background_white_round" />
+                android:background="@drawable/ic_background_white_round"
+                app:photoUrl="@{product.photoUrl}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/info"
@@ -126,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="@{title}"
+                    android:text="@{product.title}"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:letterSpacing="0.01"
@@ -142,7 +130,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:letterSpacing="0.02"
-                    android:text="@{price}"
+                    android:text="@{`Rs. ` + product.price}"
                     app:layout_constraintVertical_bias="0.3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productTitle"

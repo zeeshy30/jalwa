@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jalwa.ProductsQuery
 import com.example.jalwa.databinding.ProductViewPageBinding
 import com.example.jalwa.ui.main.view.ProductDetailBottomSheet
+import com.example.jalwa.utils.PlayerViewAdapter
 
 class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding)
     : RecyclerView.ViewHolder(binding.root) {
@@ -14,6 +15,7 @@ class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding
     fun openBottomSheet() {
         val supportFragmentManager = (productsRecyclerViewAdapter.getContext() as AppCompatActivity).supportFragmentManager
         val bundle = Bundle()
+        PlayerViewAdapter.pauseCurrentPlayingVideo()
         bundle.putString("photoUrl", product.photoUrl)
         bundle.putString("title", product.title)
         bundle.putString("price", product.price)
@@ -24,19 +26,15 @@ class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding
     }
 
     fun bind(
-        product: ProductsQuery.Product,
+        productModel: ProductsQuery.Product,
         productsRecyclerViewAdapter: ProductsRecyclerViewAdapter
     ) {
-        this.product = product
+        this.product = productModel
         this.productsRecyclerViewAdapter = productsRecyclerViewAdapter
         binding.apply {
-            url = product.videoUrl
             callback = productsRecyclerViewAdapter
             index = adapterPosition
-            title = product.title
-            vendorName = product.vendor
-            price = "Rs. ${product.price}"
-            photoUrl = product.photoUrl
+            product = productModel
             openDetailSheet = this@ViewHolderProductsRecyclerView
             executePendingBindings()
         }

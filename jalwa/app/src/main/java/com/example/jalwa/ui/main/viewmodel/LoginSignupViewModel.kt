@@ -12,18 +12,20 @@ import com.example.jalwa.data.api.suspendMutate
 import kotlinx.coroutines.launch
 
 class LoginSignupViewModel: ViewModel() {
-    val loading = MutableLiveData(true)
+    val loading = MutableLiveData(false)
     val isError = MutableLiveData(false)
-    val loginSignupObservable: MutableLiveData<Notification<Boolean?>> = MutableLiveData()
+    val loginSignupObservable: MutableLiveData<Notification<RequestCodeMutation.Data>> = MutableLiveData()
 
     fun requestCode(phoneNumber: String){
+        loading.value = true
         viewModelScope.launch {
             try {
                 val req = RequestCodeMutation(phoneNumber)
-                val data = ApolloClientManager
+                val data: RequestCodeMutation.Data = ApolloClientManager
                     .apolloClient
                     .suspendMutate(req)
                     .data!!
+                loginSignupObservable.postValue(Notification.createOnNext(data))
                 data.requestCode
             }
             catch (e: Exception) {
@@ -31,7 +33,6 @@ class LoginSignupViewModel: ViewModel() {
             }
             finally {
                 loading.value = false
-                loginSignupObservable.postValue(Notification.createOnNext(isError.value))
             }
         }
     }

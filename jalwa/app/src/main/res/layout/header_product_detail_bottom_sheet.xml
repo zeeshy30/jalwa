@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/floatingButton"
-    android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="@drawable/ic_background_light_grey_round"
-    android:padding="10dp"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:id="@+id/productImage"
-        android:layout_width="50dp"
-        android:layout_height="70dp"
-        android:background="@color/light_grey" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/info"
-        android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="price"
+            type="String" />
+        <variable
+            name="photoUrl"
+            type="String" />
+    </data>
+    <LinearLayout
+        android:id="@+id/floatingButton"
         android:layout_width="match_parent"
-        android:paddingLeft="10dp">
+        android:layout_height="80dp"
+        android:background="@drawable/ic_background_light_grey_round"
+        android:padding="10dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/productTitle"
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:background="@color/light_grey"
+            app:photoUrl="@{photoUrl}"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/info"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Star moon shaped necklace - 100% lskmv lksdmfvlkm lsdmv"
-            android:ellipsize="end"
-            android:lineSpacingMultiplier="1.2"
-            android:letterSpacing="0.01"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingLeft="10dp">
 
-        <TextView
-            android:id="@+id/productPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rs. 1150"
-            android:fontFamily="sans-serif-black"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:letterSpacing="0.02"
-            app:layout_constraintVertical_bias="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            <TextView
+                android:id="@+id/productTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@{title}"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.2"
+                android:letterSpacing="0.01"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/productPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rs. 1150"
+                android:fontFamily="sans-serif-black"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:letterSpacing="0.02"
+                app:layout_constraintVertical_bias="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

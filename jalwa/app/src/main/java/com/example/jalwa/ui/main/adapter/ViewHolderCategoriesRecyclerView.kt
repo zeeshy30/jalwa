@@ -3,13 +3,15 @@ package com.example.jalwa.ui.main.adapter
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jalwa.R
+import com.example.jalwa.databinding.CategoryButtonBinding
 
-class ViewHolderCategoriesRecyclerView(v: View) : RecyclerView.ViewHolder(v) {
-    private val categoryButton: AppCompatButton = v.findViewById(R.id.category)
-
+class ViewHolderCategoriesRecyclerView(private val binding: CategoryButtonBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(category: String) {
-        categoryButton.text = category
+        binding.apply {
+            categoryName = category
+            executePendingBindings()
+        }
     }
 }

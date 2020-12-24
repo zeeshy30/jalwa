@@ -1,22 +1,22 @@
 package com.example.jalwa.ui.main.view
 
-import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
-import com.example.jalwa.R
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jalwa.R
+import com.example.jalwa.databinding.ProductDetailBottomSheetBinding
 import com.example.jalwa.ui.main.adapter.OptionsRecyclerViewAdapter
+import com.example.jalwa.utils.PlayerViewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.product_detail_bottom_sheet.*
 
 
 class AutoFillRecyclerView @JvmOverloads constructor(
@@ -53,16 +53,9 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     companion object {
         const val TAG = "ProductDetailBottomSheet"
     }
-//    private val title = arguments?.getString("title")
-//    private val price =
-    private lateinit var title: TextView
-    private lateinit var price: TextView
-    private lateinit var productImage: ImageView
-    private lateinit var options1: AutoFillRecyclerView
-    private lateinit var options2: AutoFillRecyclerView
-    private lateinit var buyNow: AppCompatButton
-    private lateinit var addToCart: AppCompatButton
 
+    private lateinit var binding: ProductDetailBottomSheetBinding
+    private var variantQuantity = 0
     override fun getTheme() = R.style.BottomSheetDialogTheme
 
     override fun onCreateView(
@@ -70,52 +63,67 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.product_detail_bottom_sheet, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.product_detail_bottom_sheet,
+            container,
+            false
+        )
+        return binding.root
     }
 
-    private fun findViews(view: View) {
-        options1 = view.findViewById(R.id.options1)
-        options2 = view.findViewById(R.id.options2)
-        addToCart = view.findViewById(R.id.addToCart)
-        buyNow = view.findViewById(R.id.buyNow)
-        productImage = view.findViewById(R.id.productImage)
-        title = view.findViewById(R.id.productTitle)
-        price = view.findViewById(R.id.productPrice)
+    fun buyNow() {
+        this.dismiss()
+        findNavController().navigate(R.id.action_login_signup_page, Bundle())
     }
 
-    private fun clickListener() {
-        buyNow.setOnClickListener {
-            this.dismiss()
-            findNavController().navigate(R.id.action_login_signup_page, Bundle())
+    fun addToCart() {
+        this.dismiss()
+        findNavController().navigate(R.id.action_login_signup_page, Bundle())
+    }
+
+    fun increaseQuantity() {
+        variantQuantity += 1
+        binding.buyQuantity = variantQuantity.toString()
+    }
+
+    fun decreaseQuantity() {
+        if (variantQuantity > 0) {
+            variantQuantity -= 1
+            binding.buyQuantity = variantQuantity.toString()
         }
-        addToCart.setOnClickListener {
-            this.dismiss()
-            findNavController().navigate(R.id.action_login_signup_page, Bundle())
-        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        PlayerViewAdapter.playCurrentPlayingVideo()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findViews(view)
-        clickListener()
-
-        title.text = arguments?.getString("title")
         val priceText = arguments?.getString("price")
-        price.text = "Rs. ${priceText}"
-        Picasso.with(context).load(arguments?.getString("photoUrl"))
-                .resize(50, 70)
-                .into(productImage)
-        val list = ArrayList<String>()
-        list.add("XS")
-        list.add("Small")
-        list.add("Medium")
-        list.add("Large")
+        binding.apply {
+            title = arguments?.getString("title")
+            price = "Rs. $priceText"
+            buyQuantity = variantQuantity.toString()
+            photoUrl = arguments?.getString("photoUrl")
+            productDetailBottomSheetCallBacks = this@ProductDetailBottomSheet
+            executePendingBindings()
+        }
 
-        options1.apply {
-            adapter = OptionsRecyclerViewAdapter(
-                activity as Activity,
-                list
-            )
+        val list1 = ArrayList<String>()
+        list1.add("XS")
+        list1.add("Small")
+        list1.add("Medium")
+        list1.add("Large")
+
+        if (list1.isEmpty()) {
+            options2.visibility = View.GONE
+            option2.visibility = View.GONE
+        } else {
+            options1.apply {
+                adapter = OptionsRecyclerViewAdapter(list1)
+            }
         }
 
         val list2 = ArrayList<String>()
@@ -126,12 +134,13 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
         list2.add("Brown")
         list2.add("Orange")
         list2.add("White")
-
-        options2.apply {
-            adapter = OptionsRecyclerViewAdapter(
-                activity as Activity,
-                list2
-            )
+        if (list2.isEmpty()) {
+            options2.visibility = View.GONE
+            option2.visibility = View.GONE
+        } else {
+            options2.apply {
+                adapter = OptionsRecyclerViewAdapter(list2)
+            }
         }
     }
 }

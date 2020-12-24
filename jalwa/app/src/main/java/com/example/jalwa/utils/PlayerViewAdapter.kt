@@ -34,6 +34,13 @@ class PlayerViewAdapter {
             }
         }
 
+        fun playCurrentPlayingVideo(){
+            if (currentPlayingVideo != null){
+//                currentPlayingVideo?.second?.seekTo(0 );
+                currentPlayingVideo?.second?.playWhenReady = true
+            }
+        }
+
         fun playIndexThenPausePreviousPlayer(index: Int){
             if (playersMap[index]?.playWhenReady == false) {
                 pauseCurrentPlayingVideo()

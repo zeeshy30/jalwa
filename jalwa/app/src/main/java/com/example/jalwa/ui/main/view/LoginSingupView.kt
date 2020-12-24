@@ -6,51 +6,59 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.appcompat.widget.AppCompatButton
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.jalwa.R
+import com.example.jalwa.databinding.LoginSignupPageBinding
 import com.example.jalwa.ui.main.viewmodel.LoginSignupViewModel
+import kotlinx.android.synthetic.main.login_signup_page.*
 import org.koin.android.ext.android.inject
 
 class LoginSingupView : Fragment() {
-    val viewModel: LoginSignupViewModel by inject()
-    private lateinit var phoneNumber: EditText
-    private lateinit var backButton: AppCompatButton
-    private lateinit var proceedButton: AppCompatButton
+    private val viewModel: LoginSignupViewModel by inject()
+    private lateinit var binding: LoginSignupPageBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.login_signup_page, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.login_signup_page,
+            container,
+            false)
+        return binding.root
     }
 
-    private fun findViews(view: View) {
-        backButton = view.findViewById(R.id.backButton)
-        phoneNumber = view.findViewById(R.id.number)
-        proceedButton = view.findViewById(R.id.proceedButton)
+    fun backButtonClick() {
+        (context as Activity).onBackPressed()
     }
 
-    private fun setListeners(view: View) {
-        backButton.setOnClickListener {
-            (requireContext() as Activity).onBackPressed()
+    fun proceedButtonClick() {
+        if (viewModel.loading.value!!) {
+            return
         }
-        proceedButton.setOnClickListener {
-            viewModel.requestCode("+92${phoneNumber.text}")
-            viewModel.loginSignupObservable.observe(viewLifecycleOwner, { isError ->
-                if(isError.value != true) {
-                    findNavController().navigate(R.id.action_verify_number, Bundle())
-                }
-            })
+        val bundle = Bundle()
+        val phoneNumber = "+92${number.text}"
+        bundle.putString("phoneNumber", phoneNumber)
+        if (number.text.toString() == "123") {
+            findNavController().navigate(R.id.action_verify_number, bundle)
         }
-
+        viewModel.requestCode(phoneNumber)
+        viewModel.loginSignupObservable.observe(viewLifecycleOwner, {
+            if(viewModel.isError.value != true) {
+                findNavController().navigate(R.id.action_verify_number, bundle)
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findViews(view)
-        setListeners(view)
+        binding.apply {
+            loginSignupCallbacks = this@LoginSingupView
+            executePendingBindings()
+        }
     }
 
 }
