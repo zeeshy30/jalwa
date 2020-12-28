@@ -14,10 +14,10 @@
         android:layout_marginRight="10dp">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/category"
+            android:id="@+id/categoryButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_background_dark_grey_round"
+            android:background="@drawable/category_selector"
             android:minWidth="0dp"
             android:paddingHorizontal="15dp"
             android:textAllCaps="false"

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.jalwa.data.api.ApolloClientManager
 import com.example.jalwa.data.api.suspendQuery
-import com.example.jalwa.ProductsQuery
 import kotlinx.coroutines.launch
 
 class VerifyCodeViewModel: ViewModel() {

@@ -12,8 +12,16 @@ const productSKUSchema = new Schema(
             type: String,
             required: true,
         },
-        size: String,
-        color: String,
+        variantType1: {
+            type: String,
+            required: true,
+        },
+        variant1: {
+            type: String,
+            required: true,
+        },
+        variantType2: String,
+        variant2: String,
         quantity: {
             type: Number,
             required: true,

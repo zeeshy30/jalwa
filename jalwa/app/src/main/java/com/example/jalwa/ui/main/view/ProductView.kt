@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.example.jalwa.ProductsQuery
+import com.example.jalwa.CategoriesQuery
+import com.example.jalwa.ProductsFilteredByCategoryQuery
 import com.example.jalwa.R
 import com.example.jalwa.ui.main.adapter.CategoriesRecyclerViewAdapter
 import com.example.jalwa.ui.main.adapter.ProductsRecyclerViewAdapter
@@ -41,48 +42,55 @@ class ProductView : Fragment() {
         videoViews.smoothScrollToPosition(currentPosition + 1)
     }
 
+    private fun customScrollListener() {
+        val snapHelper: SnapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(videoViews)
+        scrollListener = object : RecyclerViewScrollListener() {
+            override fun onItemIsFirstVisibleItem(index: Int) {
+                if (index != -1)
+                    PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState === RecyclerView.SCROLL_STATE_IDLE) {
+                    currentPosition = (videoViews.layoutManager as LinearLayoutManager?)!!
+                        .findFirstCompletelyVisibleItemPosition()
+                    PlayerViewAdapter.playCurrentPlayingVideo()
+                }
+            }
+
+        }
+        videoViews.addOnScrollListener(scrollListener)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        customScrollListener()
         viewModel.productsObservable.observe(viewLifecycleOwner, {
+            if (videoViews != null && videoViews.adapter != null) {
+                videoViews.adapter?.notifyDataSetChanged()
+            }
             videoViews.apply {
                 adapter = ProductsRecyclerViewAdapter(
                     activity as Activity,
-                    viewModel.list as ArrayList<ProductsQuery.Product>,
+                    viewModel.productList as ArrayList<ProductsFilteredByCategoryQuery.ProductsFilteredByCategory>,
                     this@ProductView
                 )
             }
-            val snapHelper: SnapHelper = LinearSnapHelper()
-            snapHelper.attachToRecyclerView(videoViews)
-            scrollListener = object : RecyclerViewScrollListener() {
-                override fun onItemIsFirstVisibleItem(index: Int) {
-                    if (index != -1)
-                        PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
-                }
-
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (newState === RecyclerView.SCROLL_STATE_IDLE) {
-                        currentPosition = (videoViews.layoutManager as LinearLayoutManager?)!!
-                            .findFirstCompletelyVisibleItemPosition()
-                        PlayerViewAdapter.playCurrentPlayingVideo()
-                    }
-                }
-
-            }
-            videoViews.addOnScrollListener(scrollListener)
         })
-        val list = ArrayList<String>()
-        list.add("All")
-        list.add("Men's Wear")
-        list.add("Women's Wear")
-        list.add("Shoes")
-        list.add("Pandas")
-        categories.apply {
-            adapter = CategoriesRecyclerViewAdapter(
-                activity as Activity,
-                list
-            )
-        }
+
+        viewModel.categoriesObservable.observe(viewLifecycleOwner, {
+            categories.apply {
+                adapter = CategoriesRecyclerViewAdapter(
+                    viewModel.categoryList as ArrayList<CategoriesQuery.Category>,
+                    ::getProductsFilteredByCategory
+                )
+            }
+        })
+    }
+
+    private fun getProductsFilteredByCategory(category: String) {
+        viewModel.getProductsFilteredByCategory(category)
     }
 
     override fun onPause() {

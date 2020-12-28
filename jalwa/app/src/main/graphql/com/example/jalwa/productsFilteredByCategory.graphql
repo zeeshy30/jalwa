@@ -1,0 +1,14 @@
+query productsFilteredByCategory($category: String!) {
+    productsFilteredByCategory(category: $category) {
+        _id
+        handle
+        title
+        body
+        vendor
+        category
+        tags
+        price
+        photoUrl
+        videoUrl
+    }
+}

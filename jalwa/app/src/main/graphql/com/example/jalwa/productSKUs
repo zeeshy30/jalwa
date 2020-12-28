@@ -1,0 +1,11 @@
+query getProductSKUs($handle: String!) {
+    productSKUs(handle: $handle) {
+        _id,
+        SKU,
+        variantType1,
+        variant1,
+        variantType2,
+        variant2,
+        quantity
+    }
+}

@@ -10,7 +10,9 @@ import {
 
     addProductValidator,
 
-    addProductSKUValidator
+    addProductSKUValidator,
+
+    addCategoryValidator
 } from '../validator';
 
 import TC from '../module';
@@ -18,9 +20,11 @@ import TC from '../module';
 schemaComposer.Query.addFields({
     user: TC.UserTC.getResolver('user', [isAuth]),
 
-    products: TC.ProductTC.getResolver('products'),
+    productsFilteredByCategory: TC.ProductTC.getResolver('productsFilteredByCategory'),
 
     productSKUs: TC.ProductSKUTC.getResolver('productSKUs'),
+
+    categories: TC.CategoryTC.getResolver('categories')
 });
 
 schemaComposer.Mutation.addFields({
@@ -33,6 +37,8 @@ schemaComposer.Mutation.addFields({
     addProduct: TC.ProductTC.getResolver('addProduct', [addProductValidator]),
 
     addProductSKU: TC.ProductSKUTC.getResolver('addProductSKU', [addProductSKUValidator]),
+
+    addCategory: TC.CategoryTC.getResolver('addCategory', [addCategoryValidator])
 });
 
 const schema = schemaComposer.buildSchema();

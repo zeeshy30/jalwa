@@ -107,6 +107,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
             price = "Rs. $priceText"
             buyQuantity = variantQuantity.toString()
             photoUrl = arguments?.getString("photoUrl")
+            body = arguments?.getString("body")
             productDetailBottomSheetCallBacks = this@ProductDetailBottomSheet
             executePendingBindings()
         }

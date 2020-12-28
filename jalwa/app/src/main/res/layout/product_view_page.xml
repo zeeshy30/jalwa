@@ -11,7 +11,7 @@
             type="int" />
         <variable
             name="product"
-            type="com.example.jalwa.ProductsQuery.Product" />
+            type="com.example.jalwa.ProductsFilteredByCategoryQuery.ProductsFilteredByCategory" />
         <variable
             name="openDetailSheet"
             type="com.example.jalwa.ui.main.adapter.ViewHolderProductsRecyclerView" />

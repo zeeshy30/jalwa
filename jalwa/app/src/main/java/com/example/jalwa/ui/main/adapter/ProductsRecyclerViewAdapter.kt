@@ -4,11 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.example.jalwa.R
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jalwa.ProductsQuery
+import com.example.jalwa.ProductsFilteredByCategoryQuery
 import com.example.jalwa.databinding.ProductViewPageBinding
 import com.example.jalwa.ui.main.view.ProductView
 import com.example.jalwa.utils.ExoPlayerStateCallback
@@ -20,7 +19,7 @@ import kotlin.properties.Delegates
 
 class ProductsRecyclerViewAdapter(
     private val context: Context,
-    private val products: ArrayList<ProductsQuery.Product>,
+    private val products: ArrayList<ProductsFilteredByCategoryQuery.ProductsFilteredByCategory>,
     private val productView: ProductView
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ExoPlayerStateCallback {
     private var currentPosition by Delegates.notNull<Int>()
@@ -60,7 +59,6 @@ class ProductsRecyclerViewAdapter(
     }
 
     override fun onStartedPlaying(player: Player) {
-        productView.playPause.visibility = View.VISIBLE
     }
 
     override fun onVideoBuffering(player: Player) {

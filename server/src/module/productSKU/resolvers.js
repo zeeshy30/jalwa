@@ -19,23 +19,32 @@ const addProductSKU = {
     args: {
         handle: 'String!',
         SKU: 'String!',
-        size: 'String',
-        color: 'String',
+        variantType1: 'String!',
+        variant1: 'String!',
+        variantType2: 'String',
+        variant2: 'String',
         quantity: 'Int!',
     },
     resolve: async ({ args }) => {
-        const { handle, SKU, size='', color='', quantity  } = args;
+        const { handle, SKU, variantType1, variant1, variantType2='', variant2='', quantity  } = args;
         try {
             const handleExists = await ProductModel.findOne({ handle });
             if (!handleExists) {
                 return Promise.reject(new Error('This handle does not exist.'));
             }
+            const SKUexists = await ProductSKUModel.findOne({ SKU });
+            if (SKUexists) {
+                return Promise.reject(new Error('This SKU already exists.'));
+            }
 
-            const productSKU = await new ProductSKUModel({
-                handle, 
+            await new ProductSKUModel({
+                handle,
                 SKU,
-                color,
-                quantity, 
+                variantType1,
+                variant1,
+                variantType2,
+                variant2,
+                quantity,
             }).save();
 
             return 'succeed: true';

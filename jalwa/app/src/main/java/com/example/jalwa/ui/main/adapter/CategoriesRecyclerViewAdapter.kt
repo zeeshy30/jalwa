@@ -1,16 +1,22 @@
 package com.example.jalwa.ui.main.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jalwa.CategoriesQuery
 import com.example.jalwa.R
 import com.example.jalwa.databinding.CategoryButtonBinding
 
-class CategoriesRecyclerViewAdapter(private val context: Context, private val categories: ArrayList<String>) :
+class CategoriesRecyclerViewAdapter(
+    private val categories: ArrayList<CategoriesQuery.Category>,
+    private val getProductsFilteredByCategory: (String) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    private var selectedIndex = 0
+    private var previousSelectedIndex = -1
     override fun getItemCount(): Int {
         return categories.size
     }
@@ -28,7 +34,15 @@ class CategoriesRecyclerViewAdapter(private val context: Context, private val ca
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val category = categories[position]
         val obj = holder as ViewHolderCategoriesRecyclerView?
+        obj?.categoryButton?.isSelected = selectedIndex == position
         obj?.bind(category)
+        obj?.categoryButton?.setOnClickListener {
+            previousSelectedIndex = selectedIndex
+            selectedIndex = position
+            getProductsFilteredByCategory(category.category)
+            notifyItemChanged(previousSelectedIndex)
+            notifyItemChanged(selectedIndex)
+        }
     }
 
 }

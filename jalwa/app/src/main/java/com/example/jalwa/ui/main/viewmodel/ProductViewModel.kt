@@ -4,31 +4,61 @@ import io.reactivex.rxjava3.core.Notification
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.jalwa.CategoriesQuery
+import com.example.jalwa.ProductsFilteredByCategoryQuery
 import com.example.jalwa.data.api.ApolloClientManager
 import com.example.jalwa.data.api.suspendQuery
-import com.example.jalwa.ProductsQuery
 import kotlinx.coroutines.launch
 
 class ProductViewModel: ViewModel() {
     val loading = MutableLiveData(true)
     val isError = MutableLiveData<Boolean>()
-    var list: ArrayList<Any> = arrayListOf()
+    var productList: ArrayList<Any> = arrayListOf()
+    var categoryList: ArrayList<Any> = arrayListOf()
     val productsObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
+    val categoriesObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
 
     init {
+        val category = CategoriesQuery.Category(category = "All")
+        categoryList.add(category)
         viewModelScope.launch {
             try {
-                val viewerInfo: ProductsQuery.Data = ApolloClientManager
+                val filteredProducts: ProductsFilteredByCategoryQuery.Data = ApolloClientManager
                     .apolloClient
-                    .suspendQuery(ProductsQuery())
+                    .suspendQuery(ProductsFilteredByCategoryQuery("All"))
                     .data!!
-                viewerInfo.products?.let { list.addAll(it) }
-                productsObservable.postValue(Notification.createOnNext(list))
+                filteredProducts.productsFilteredByCategory?.let { productList.addAll(it) }
+                productsObservable.postValue(Notification.createOnNext(productList))
+
+                val categoriesQueryData: CategoriesQuery.Data = ApolloClientManager
+                    .apolloClient
+                    .suspendQuery(CategoriesQuery())
+                    .data!!
+                categoriesQueryData.categories?.let { categoryList.addAll(it) }
+                categoriesObservable.postValue(Notification.createOnNext(categoryList))
             }
             catch (e: Exception) {
                 isError.value = true
             }
             finally {
+                loading.value = false
+            }
+        }
+    }
+
+    fun getProductsFilteredByCategory(category: String) {
+        viewModelScope.launch {
+            try {
+                val filteredProducts: ProductsFilteredByCategoryQuery.Data = ApolloClientManager
+                    .apolloClient
+                    .suspendQuery(ProductsFilteredByCategoryQuery(category))
+                    .data!!
+                productList.clear()
+                filteredProducts.productsFilteredByCategory?.let { productList.addAll(it) }
+                productsObservable.postValue(Notification.createOnNext(productList))
+            } catch (e: Exception) {
+                isError.value = true
+            } finally {
                 loading.value = false
             }
         }

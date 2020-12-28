@@ -1,11 +1,23 @@
 import ProductModel from './product';
+import CategoryModel from '../category/category';
 
-const products = {
-    name: 'products',
+
+const productsFilteredByCategory = {
+    name: 'productsFilteredByCategory',
     type: ['Product!'],
-    resolve: async () => {
-        const productList = await ProductModel.find({});
-        return productList;
+    args: {
+        category: 'String!'
+    },
+    resolve: async ({ args }) => {
+        const { category } = args;
+        let productList = null;
+        if (category === 'All') {
+            productList = await ProductModel.find({});
+        } else {
+            productList = await ProductModel.find({ category });
+        }
+        return productList;    
+        
     } 
 };
 
@@ -17,31 +29,38 @@ const addProduct = {
         title: 'String!',
         body: 'String',
         vendor: 'String!',
-        type: 'String',
+        category: 'String!',
         tags: ['String'],
         price: 'String!',
         photoUrl: 'String!',
         videoUrl: 'String!',
     },
     resolve: async ({ args }) => {
-        const { handle, title, body = '', vendor, type = '', tags = [], price, photoUrl, videoUrl } = args;
+        const { handle, title, body = '', vendor, category, tags = [], price, photoUrl, videoUrl } = args;
         try {
             const handleExists = await ProductModel.findOne({ handle });
             if (handleExists) {
                 return Promise.reject(new Error('This handle is already registered.'));
             }
 
-            const product = await new ProductModel({
+            await new ProductModel({
                 handle, 
                 title,
                 body,
                 vendor, 
-                type,
+                category,
                 tags,
                 price,
                 photoUrl,
                 videoUrl, 
             }).save();
+            
+            const categoryExists = await CategoryModel.findOne({ category });
+            if (!categoryExists) {
+                await new CategoryModel({
+                    category
+                }).save();
+            }
 
             return 'succeed: true';
         }
@@ -52,6 +71,6 @@ const addProduct = {
 };
 
 export default {
-    products,
+    productsFilteredByCategory,
     addProduct
 };

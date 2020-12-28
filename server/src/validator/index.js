@@ -1,6 +1,7 @@
 import UserValidator from './userValidator';
 import ProductValidator from './productValidator';
 import ProductSKUValidator from './productSKUValidator';
+import CategoryValidator from './categoryValidator';
 
 const UserValidatorObject = UserValidator.getInstance();
 export const verifyCodeValidator = UserValidatorObject.verifyCode;
@@ -12,3 +13,7 @@ export const addProductValidator = ProductValidatorObject.addProduct;
 
 const ProductSKUValidatorObject = ProductSKUValidator.getInstance();
 export const addProductSKUValidator = ProductSKUValidatorObject.addProductSKU;
+
+
+const CategoryValidatorObject = CategoryValidator.getInstance();
+export const addCategoryValidator = CategoryValidatorObject.addCategory;

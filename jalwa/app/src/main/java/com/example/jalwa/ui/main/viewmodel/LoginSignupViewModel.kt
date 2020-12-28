@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.jalwa.data.api.ApolloClientManager
-import com.example.jalwa.data.api.suspendQuery
-import com.example.jalwa.ProductsQuery
 import com.example.jalwa.RequestCodeMutation
 import com.example.jalwa.data.api.suspendMutate
 import kotlinx.coroutines.launch
