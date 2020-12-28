@@ -51,30 +51,6 @@ const addProduct = {
     }
 };
 
-
-
-
-// const updateProduct = {
-//     name: 'updateProduct',
-//     type: 'User!',
-//     args: { fullName: 'String!',  },
-//     resolve: async ({ args: { fullName }, context: { user } }) => {
-//         try {
-//             user.set({
-//                 fullName
-//             });
-
-//             await user.save();
-
-//             return user;
-//         } catch (error) {
-//             return Promise.reject(error);
-//         }
-//     }
-// };
-
-
-
 export default {
     products,
     addProduct

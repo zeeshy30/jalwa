@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
@@ -16,6 +17,8 @@ import com.example.jalwa.ui.main.adapter.ProductsRecyclerViewAdapter
 import com.example.jalwa.ui.main.viewmodel.ProductViewModel
 import com.example.jalwa.utils.PlayerViewAdapter
 import com.example.jalwa.utils.RecyclerViewScrollListener
+import kotlinx.android.synthetic.main.products.*
+import kotlinx.android.synthetic.main.top_bar_of_product_page.*
 import org.koin.android.ext.android.inject
 
 
@@ -24,45 +27,49 @@ import org.koin.android.ext.android.inject
  */
 
 class ProductView : Fragment() {
-    val viewModel: ProductViewModel by inject()
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var categoriesRecyclerView: RecyclerView
+    private val viewModel: ProductViewModel by inject()
     private lateinit var scrollListener: RecyclerViewScrollListener
-
+    private var currentPosition = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.products, container, false)
     }
 
-    private fun findViews(view: View) {
-        recyclerView = view.findViewById(R.id.videoViews)
-        categoriesRecyclerView = view.findViewById(R.id.categories)
+    fun scrollToNextVideo() {
+        videoViews.smoothScrollToPosition(currentPosition + 1)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findViews(view)
 
         viewModel.productsObservable.observe(viewLifecycleOwner, {
-            recyclerView.apply {
+            videoViews.apply {
                 adapter = ProductsRecyclerViewAdapter(
                     activity as Activity,
-                    viewModel.list as ArrayList<ProductsQuery.Product>
+                    viewModel.list as ArrayList<ProductsQuery.Product>,
+                    this@ProductView
                 )
             }
             val snapHelper: SnapHelper = LinearSnapHelper()
-            snapHelper.attachToRecyclerView(recyclerView)
+            snapHelper.attachToRecyclerView(videoViews)
             scrollListener = object : RecyclerViewScrollListener() {
                 override fun onItemIsFirstVisibleItem(index: Int) {
                     if (index != -1)
                         PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
                 }
 
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (newState === RecyclerView.SCROLL_STATE_IDLE) {
+                        currentPosition = (videoViews.layoutManager as LinearLayoutManager?)!!
+                            .findFirstCompletelyVisibleItemPosition()
+                        PlayerViewAdapter.playCurrentPlayingVideo()
+                    }
+                }
+
             }
-            recyclerView.addOnScrollListener(scrollListener)
+            videoViews.addOnScrollListener(scrollListener)
         })
         val list = ArrayList<String>()
         list.add("All")
@@ -70,7 +77,7 @@ class ProductView : Fragment() {
         list.add("Women's Wear")
         list.add("Shoes")
         list.add("Pandas")
-        categoriesRecyclerView.apply {
+        categories.apply {
             adapter = CategoriesRecyclerViewAdapter(
                 activity as Activity,
                 list

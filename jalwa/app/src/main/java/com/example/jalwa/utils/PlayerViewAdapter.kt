@@ -1,17 +1,11 @@
 package com.example.jalwa.utils
 
-import android.content.Context
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ui.PlayerView
 import com.squareup.picasso.Picasso
-
-// extension function for show toast
-fun Context.toast(text: String){
-    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-}
 
 class PlayerViewAdapter {
 
@@ -36,7 +30,6 @@ class PlayerViewAdapter {
 
         fun playCurrentPlayingVideo(){
             if (currentPlayingVideo != null){
-//                currentPlayingVideo?.second?.seekTo(0 );
                 currentPlayingVideo?.second?.playWhenReady = true
             }
         }
@@ -94,6 +87,7 @@ class PlayerViewAdapter {
                     super.onPlaybackStateChanged(state)
 
                     if (state == Player.STATE_BUFFERING) callback.onVideoBuffering(player) // Buffering.. set progress bar visible here
+                    if (state == Player.STATE_ENDED) callback.onFinishedPlaying(player)
                     if (state == Player.STATE_READY) {
                         // [PlayerView] has fetched the video duration so this is the block to hide the buffering progress bar
                         callback.onVideoDurationRetrieved((this@loadVideo.player as SimpleExoPlayer).duration, player)

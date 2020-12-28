@@ -7,22 +7,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/shareIcon"
+        android:id="@+id/favouriteIcon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:srcCompat="@drawable/ic_outline_favorite_24"
-        app:layout_constraintEnd_toEndOf="@id/shareText"
-        app:layout_constraintStart_toStartOf="@id/shareText"
+        app:layout_constraintEnd_toEndOf="@id/favouriteCount"
+        app:layout_constraintStart_toStartOf="@id/favouriteCount"
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/shareText"
+        android:id="@+id/favouriteCount"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="50"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shareIcon" />
+        app:layout_constraintTop_toBottomOf="@id/favouriteIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
