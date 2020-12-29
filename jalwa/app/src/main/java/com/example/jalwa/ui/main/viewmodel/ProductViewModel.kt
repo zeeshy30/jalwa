@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 class ProductViewModel: ViewModel() {
     val loading = MutableLiveData(true)
     val isError = MutableLiveData<Boolean>()
-    var productList: ArrayList<Any> = arrayListOf()
-    var categoryList: ArrayList<Any> = arrayListOf()
+    val productList: ArrayList<Any> = arrayListOf()
+    val categoryList: ArrayList<Any> = arrayListOf()
     val productsObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
     val categoriesObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
 

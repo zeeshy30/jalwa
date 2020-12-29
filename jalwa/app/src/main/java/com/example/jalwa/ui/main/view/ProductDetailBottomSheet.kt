@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jalwa.GetProductSKUsQuery
 import com.example.jalwa.R
 import com.example.jalwa.databinding.ProductDetailBottomSheetBinding
 import com.example.jalwa.ui.main.adapter.OptionsRecyclerViewAdapter
@@ -60,8 +61,12 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     private var variantQuantity = 0
     private var variantType1: String = ""
     private var variantType2: String = ""
+    private var variant1Selected = ""
+    private var variant2Selected = ""
     private val variant1Set = mutableSetOf<String>()
     private val variant2Set = mutableSetOf<String>()
+    private val variant1SetFiltered = mutableSetOf<String>()
+    private val variant2SetFiltered = mutableSetOf<String>()
 
     private lateinit var binding: ProductDetailBottomSheetBinding
     override fun getTheme() = R.style.BottomSheetDialogTheme
@@ -107,6 +112,32 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
         PlayerViewAdapter.playCurrentPlayingVideo()
     }
 
+    private fun selectVariant1(variant: String) {
+        variant1Selected = variant
+        variant2SetFiltered.clear()
+        viewModel.productSKUs.forEach {
+            val productSKU = it as GetProductSKUsQuery.ProductSKU
+            if (variant1Selected == productSKU.variant1) {
+                productSKU.variant2?.let { it1 -> variant2SetFiltered.add(it1) }
+            }
+        }
+        options1.adapter?.notifyDataSetChanged()
+        options2.adapter?.notifyDataSetChanged()
+    }
+
+    private fun selectVariant2(variant: String) {
+        variant2Selected = variant
+        variant1SetFiltered.clear()
+        viewModel.productSKUs.forEach {
+            val productSKU = it as GetProductSKUsQuery.ProductSKU
+            if (variant2Selected == productSKU.variant2) {
+                productSKU.variant1?.let { it1 -> variant1SetFiltered.add(it1) }
+            }
+        }
+        options2.adapter?.notifyDataSetChanged()
+        options1.adapter?.notifyDataSetChanged()
+    }
+
     private fun getProductSKUs() {
         arguments?.getString("handle")?.let { viewModel.getProductDetails(it) }
         viewModel.productSKUsObservable.observe(viewLifecycleOwner, {
@@ -130,7 +161,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
                     option1.visibility = View.GONE
                 } else {
                     options1.apply {
-                        adapter = OptionsRecyclerViewAdapter(variant1Set)
+                        adapter = OptionsRecyclerViewAdapter(variant1Set, ::selectVariant1, variant1SetFiltered)
                     }
                 }
                 if (variant2Set.isEmpty()) {
@@ -138,7 +169,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
                     option2.visibility = View.GONE
                 } else {
                     options2.apply {
-                        adapter = OptionsRecyclerViewAdapter(variant2Set)
+                        adapter = OptionsRecyclerViewAdapter(variant2Set, ::selectVariant2, variant2SetFiltered)
                     }
                 }
             }

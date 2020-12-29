@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 class ProductDetailViewModel: ViewModel() {
     val loading = MutableLiveData(false)
     val isError = MutableLiveData(false)
+    val productSKUs: ArrayList<Any> = arrayListOf()
     val productSKUsObservable: MutableLiveData<Notification<GetProductSKUsQuery.Data>> = MutableLiveData()
 
     fun getProductDetails(handle: String){
@@ -23,6 +24,7 @@ class ProductDetailViewModel: ViewModel() {
                     .apolloClient
                     .suspendQuery(req)
                     .data!!
+                data.productSKUs?.let { productSKUs.addAll(it) }
                 productSKUsObservable.postValue(Notification.createOnNext(data))
             }
             catch (e: Exception) {
