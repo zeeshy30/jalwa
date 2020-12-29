@@ -19,14 +19,14 @@ const addProductSKU = {
     args: {
         handle: 'String!',
         SKU: 'String!',
-        variantType1: 'String!',
-        variant1: 'String!',
+        variantType1: 'String',
+        variant1: 'String',
         variantType2: 'String',
         variant2: 'String',
         quantity: 'Int!',
     },
     resolve: async ({ args }) => {
-        const { handle, SKU, variantType1, variant1, variantType2='', variant2='', quantity  } = args;
+        const { handle, SKU, variantType1='', variant1='', variantType2='', variant2='', quantity  } = args;
         try {
             const handleExists = await ProductModel.findOne({ handle });
             if (!handleExists) {

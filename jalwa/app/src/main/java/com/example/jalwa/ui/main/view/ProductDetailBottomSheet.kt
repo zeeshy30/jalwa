@@ -58,7 +58,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     }
     private val viewModel: ProductDetailViewModel by inject()
 
-    private var variantQuantity = 0
+    private var variantQuantity = 1
     private var variantType1: String = ""
     private var variantType2: String = ""
     private var variant1Selected = ""
@@ -87,23 +87,59 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
 
     fun buyNow() {
         this.dismiss()
+        PlayerViewAdapter.releaseAllPlayers()
         findNavController().navigate(R.id.action_login_signup_page, Bundle())
     }
 
     fun addToCart() {
         this.dismiss()
+        PlayerViewAdapter.releaseAllPlayers()
         findNavController().navigate(R.id.action_login_signup_page, Bundle())
     }
 
     fun increaseQuantity() {
-        variantQuantity += 1
-        binding.buyQuantity = variantQuantity.toString()
+        if (viewModel.loading.value!!) {
+            return
+        }
+        var max = 1
+        if (variantType1 != "" && variantType2 != "") {
+            viewModel.productSKUs.forEach {
+                val productSKU = (it as GetProductSKUsQuery.ProductSKU)
+                if (productSKU.variant1 == variant1Selected && productSKU.variant2 == variant2Selected)
+                    max = productSKU.quantity.toInt()
+            }
+        } else if (variantType1 != "") {
+            viewModel.productSKUs.forEach {
+                val productSKU = (it as GetProductSKUsQuery.ProductSKU)
+                if (productSKU.variant1 == variant1Selected)
+                    max = productSKU.quantity.toInt()
+            }
+        } else {
+            if (viewModel.productSKUs.isNotEmpty()) {
+                max = (viewModel.productSKUs[0] as GetProductSKUsQuery.ProductSKU).quantity.toInt()
+            }
+        }
+        if (variantQuantity < max ) {
+            minus.alpha = 1f
+            variantQuantity += 1
+            binding.buyQuantity = variantQuantity.toString()
+            if (variantQuantity == max) {
+                plus.alpha = 0.5f
+            }
+        }
     }
 
     fun decreaseQuantity() {
-        if (variantQuantity > 0) {
+        if (viewModel.loading.value!!) {
+            return
+        }
+        if (variantQuantity > 1) {
+            plus.alpha = 1f
             variantQuantity -= 1
             binding.buyQuantity = variantQuantity.toString()
+            if (variantQuantity == 1) {
+                minus.alpha = 0.5f
+            }
         }
     }
 
@@ -120,7 +156,13 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
             if (variant1Selected == productSKU.variant1) {
                 productSKU.variant2?.let { it1 -> variant2SetFiltered.add(it1) }
             }
+            if (variantType2 == "" || variant2Selected != "") {
+                plus.alpha = 1f
+            }
         }
+        variantQuantity = 1
+        minus.alpha = 0.5f
+        binding.buyQuantity = variantQuantity.toString()
         options1.adapter?.notifyDataSetChanged()
         options2.adapter?.notifyDataSetChanged()
     }
@@ -133,7 +175,13 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
             if (variant2Selected == productSKU.variant2) {
                 productSKU.variant1?.let { it1 -> variant1SetFiltered.add(it1) }
             }
+            if (variant1Selected != "") {
+                plus.alpha = 1f
+            }
         }
+        variantQuantity = 1
+        minus.alpha = 0.5f
+        binding.buyQuantity = variantQuantity.toString()
         options2.adapter?.notifyDataSetChanged()
         options1.adapter?.notifyDataSetChanged()
     }
@@ -144,8 +192,9 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
             if(viewModel.isError.value != true) {
                 it.value.productSKUs?.forEach { productSKU ->
                     if (productSKU.variant1 != "" && productSKU.variant1 != null) {
-                        variantType1 = productSKU.variantType1
+                        variantType1 = productSKU.variantType1!!
                         variant1Set.add(productSKU.variant1)
+                        plus.alpha = 0.5f
                     }
                     if (productSKU.variant2 != "" && productSKU.variant2 != null) {
                         variantType2 = productSKU.variantType2!!
@@ -188,6 +237,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
             productDetailBottomSheetCallBacks = this@ProductDetailBottomSheet
             executePendingBindings()
         }
+        minus.alpha = 0.5f
         getProductSKUs()
     }
 }

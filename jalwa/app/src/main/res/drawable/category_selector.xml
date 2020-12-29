@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
         <!-- Color when the row is selected -->
-        <item android:drawable="@drawable/ic_background_red_round" android:state_pressed="false" android:state_selected="true" />
+        <item android:drawable="@drawable/ic_background_red_round" android:state_selected="true" />
         <item android:drawable="@drawable/ic_background_dark_grey_round" android:state_selected="false" />
 </selector>
