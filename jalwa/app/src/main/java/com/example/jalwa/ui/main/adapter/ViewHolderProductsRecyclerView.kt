@@ -17,6 +17,7 @@ class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding
         val bundle = Bundle()
         PlayerViewAdapter.pauseCurrentPlayingVideo()
         bundle.putString("photoUrl", product.photoUrl)
+        bundle.putString("handle", product.handle)
         bundle.putString("title", product.title)
         bundle.putString("price", product.price)
         bundle.putString("body", product.body)

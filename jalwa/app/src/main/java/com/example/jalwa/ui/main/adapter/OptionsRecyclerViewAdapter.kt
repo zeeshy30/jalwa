@@ -9,7 +9,7 @@ import com.example.jalwa.R
 import com.example.jalwa.databinding.ProductViewPageBinding
 import com.example.jalwa.databinding.VariantOptionButtonBinding
 
-class OptionsRecyclerViewAdapter(private val options: ArrayList<String>) :
+class OptionsRecyclerViewAdapter(private val options: MutableSet<String>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -27,7 +27,7 @@ class OptionsRecyclerViewAdapter(private val options: ArrayList<String>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val option = options[position]
+        val option = options.elementAt(position)
         val obj = holder as ViewHolderOptionsRecyclerView?
         obj?.bind(option)
     }
