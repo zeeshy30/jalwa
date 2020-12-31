@@ -2,14 +2,12 @@ package com.example.jalwa.ui.main.view
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
+import androidx.recyclerview.widget.*
 import com.example.jalwa.CategoriesQuery
 import com.example.jalwa.ProductsFilteredByCategoryQuery
 import com.example.jalwa.R
@@ -18,19 +16,17 @@ import com.example.jalwa.ui.main.adapter.ProductsRecyclerViewAdapter
 import com.example.jalwa.ui.main.viewmodel.ProductViewModel
 import com.example.jalwa.utils.PlayerViewAdapter
 import com.example.jalwa.utils.RecyclerViewScrollListener
+import kotlinx.android.synthetic.main.product_view_page.*
 import kotlinx.android.synthetic.main.products.*
 import kotlinx.android.synthetic.main.top_bar_of_product_page.*
 import org.koin.android.ext.android.inject
 
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
-
 class ProductView : Fragment() {
     private val viewModel: ProductViewModel by inject()
     private lateinit var scrollListener: RecyclerViewScrollListener
     private var currentPosition = 0
+    private var categorySelected = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +39,7 @@ class ProductView : Fragment() {
     }
 
     private fun customScrollListener() {
-        val snapHelper: SnapHelper = LinearSnapHelper()
+        val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(videoViews)
         scrollListener = object : RecyclerViewScrollListener() {
             override fun onItemIsFirstVisibleItem(index: Int) {
@@ -52,7 +48,7 @@ class ProductView : Fragment() {
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState === RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = (videoViews.layoutManager as LinearLayoutManager?)!!
                         .findFirstCompletelyVisibleItemPosition()
                     PlayerViewAdapter.playCurrentPlayingVideo()

@@ -35,6 +35,7 @@ schemaComposer.Mutation.addFields({
     updateUser: TC.UserTC.getResolver('updateUser', [isAuth, updateUserValidator]),
 
     addProduct: TC.ProductTC.getResolver('addProduct', [addProductValidator]),
+    updateProduct: TC.ProductTC.getResolver('updateProduct'),
 
     addProductSKU: TC.ProductSKUTC.getResolver('addProductSKU', [addProductSKUValidator]),
 

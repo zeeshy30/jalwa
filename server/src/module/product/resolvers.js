@@ -1,6 +1,6 @@
+import merge from 'deepmerge';
 import ProductModel from './product';
 import CategoryModel from '../category/category';
-
 
 const productsFilteredByCategory = {
     name: 'productsFilteredByCategory',
@@ -70,7 +70,40 @@ const addProduct = {
     }
 };
 
+const updateProduct = {
+    name: 'updateProduct',
+    type: 'String!',
+    args: {
+        _id: 'String!',
+        title: 'String',
+        body: 'String',
+        vendor: 'String',
+        category: 'String',
+        tags: ['String'],
+        price: 'String',
+        photoUrl: 'String',
+        videoUrl: 'String',
+    },
+    resolve: async ({ args }) => {
+        const { _id, title=null, body=null, vendor=null, category=null, tags=[], price=null, photoUrl=null, videoUrl=null } = args;
+        try {
+            const product = await ProductModel.findById(_id);
+            if (!product) {
+                return Promise.reject(new Error('Invalid product ID.'));
+            }
+
+            Object.assign(product, merge(product.toObject(), args));
+            await product.save();
+            return 'succeed: true';
+        }
+        catch(error) {
+            return Promise.reject(error);   
+        }
+    }
+};
+
 export default {
     productsFilteredByCategory,
-    addProduct
+    addProduct,
+    updateProduct
 };

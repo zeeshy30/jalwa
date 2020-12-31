@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jalwa.CategoriesQuery
 import com.example.jalwa.R
 import com.example.jalwa.databinding.CategoryButtonBinding
+import com.example.jalwa.utils.PlayerViewAdapter
 
 class CategoriesRecyclerViewAdapter(
     private val categories: ArrayList<CategoriesQuery.Category>,
@@ -40,6 +41,7 @@ class CategoriesRecyclerViewAdapter(
             previousSelectedIndex = selectedIndex
             selectedIndex = position
             getProductsFilteredByCategory(category.category)
+            PlayerViewAdapter.releaseAllPlayers()
             notifyItemChanged(previousSelectedIndex)
             notifyItemChanged(selectedIndex)
         }
