@@ -1,9 +1,7 @@
 package com.example.jalwa.ui.main.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jalwa.CategoriesQuery
@@ -13,10 +11,10 @@ import com.example.jalwa.utils.PlayerViewAdapter
 
 class CategoriesRecyclerViewAdapter(
     private val categories: ArrayList<CategoriesQuery.Category>,
-    private val getProductsFilteredByCategory: (String) -> Unit
+    private val getProductsFilteredByCategory: (String, Int) -> Unit,
+    private var selectedCategory: Int
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var selectedIndex = 0
     private var previousSelectedIndex = -1
     override fun getItemCount(): Int {
         return categories.size
@@ -35,15 +33,15 @@ class CategoriesRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val category = categories[position]
         val obj = holder as ViewHolderCategoriesRecyclerView?
-        obj?.categoryButton?.isSelected = selectedIndex == position
+        obj?.categoryButton?.isSelected = selectedCategory == position
         obj?.bind(category)
         obj?.categoryButton?.setOnClickListener {
-            previousSelectedIndex = selectedIndex
-            selectedIndex = position
-            getProductsFilteredByCategory(category.category)
+            previousSelectedIndex = selectedCategory
+            selectedCategory = position
+            getProductsFilteredByCategory(category.category, position)
             PlayerViewAdapter.releaseAllPlayers()
             notifyItemChanged(previousSelectedIndex)
-            notifyItemChanged(selectedIndex)
+            notifyItemChanged(selectedCategory)
         }
     }
 

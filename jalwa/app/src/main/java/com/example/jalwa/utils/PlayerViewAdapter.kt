@@ -22,8 +22,11 @@ class PlayerViewAdapter {
             playersMap[index]?.release()
         }
 
-        fun pauseCurrentPlayingVideo(){
+        fun pauseCurrentPlayingVideo(seekToStart: Boolean = false){
             if (currentPlayingVideo != null){
+                if (seekToStart) {
+                    currentPlayingVideo?.second?.seekTo(0)
+                }
                 currentPlayingVideo?.second?.playWhenReady = false
             }
         }
@@ -36,7 +39,7 @@ class PlayerViewAdapter {
 
         fun playIndexThenPausePreviousPlayer(index: Int){
             if (playersMap[index]?.playWhenReady == false) {
-                pauseCurrentPlayingVideo()
+                pauseCurrentPlayingVideo(true)
                 playersMap[index]?.playWhenReady = true
                 currentPlayingVideo = Pair(index, playersMap[index]!!)
             }
@@ -77,9 +80,9 @@ class PlayerViewAdapter {
                         super.onPlayerError(error)
                     }
                     Toast.makeText(
-                            this@loadVideo.context,
-                            "Oops! Error occurred while playing media.",
-                            Toast.LENGTH_SHORT
+                        this@loadVideo.context,
+                        "Oops! Error occurred while playing media.",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -90,7 +93,10 @@ class PlayerViewAdapter {
                     if (state == Player.STATE_ENDED) callback.onFinishedPlaying(player)
                     if (state == Player.STATE_READY) {
                         // [PlayerView] has fetched the video duration so this is the block to hide the buffering progress bar
-                        callback.onVideoDurationRetrieved((this@loadVideo.player as SimpleExoPlayer).duration, player)
+                        callback.onVideoDurationRetrieved(
+                            (this@loadVideo.player as SimpleExoPlayer).duration,
+                            player
+                        )
                     }
                     if (state == Player.STATE_READY && player.playWhenReady) {
                         // [PlayerView] has started playing/resumed the video

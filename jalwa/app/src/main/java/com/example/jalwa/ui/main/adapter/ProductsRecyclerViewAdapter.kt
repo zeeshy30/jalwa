@@ -62,10 +62,10 @@ class ProductsRecyclerViewAdapter(
     }
 
     override fun onVideoBuffering(player: Player) {
-        productView.playPause.visibility = View.INVISIBLE
+//        productView.playPause.visibility = View.INVISIBLE
     }
 
     override fun onVideoDurationRetrieved(duration: Long, player: Player) {
-        productView.playPause.visibility = View.VISIBLE
+//        productView.playPause.visibility = View.VISIBLE
     }
 }

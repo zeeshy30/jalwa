@@ -26,7 +26,6 @@ class ProductView : Fragment() {
     private val viewModel: ProductViewModel by inject()
     private lateinit var scrollListener: RecyclerViewScrollListener
     private var currentPosition = 0
-    private var categorySelected = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,14 +78,15 @@ class ProductView : Fragment() {
             categories.apply {
                 adapter = CategoriesRecyclerViewAdapter(
                     viewModel.categoryList as ArrayList<CategoriesQuery.Category>,
-                    ::getProductsFilteredByCategory
+                    ::getProductsFilteredByCategory,
+                    viewModel.selectedCategory
                 )
             }
         })
     }
 
-    private fun getProductsFilteredByCategory(category: String) {
-        viewModel.getProductsFilteredByCategory(category)
+    private fun getProductsFilteredByCategory(category: String, index: Int) {
+        viewModel.getProductsFilteredByCategory(category, index)
     }
 
     override fun onPause() {

@@ -17,7 +17,7 @@ class ProductViewModel: ViewModel() {
     val categoryList: ArrayList<Any> = arrayListOf()
     val productsObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
     val categoriesObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
-
+    var selectedCategory = 0
     init {
         val category = CategoriesQuery.Category(category = "All")
         categoryList.add(category)
@@ -46,7 +46,8 @@ class ProductViewModel: ViewModel() {
         }
     }
 
-    fun getProductsFilteredByCategory(category: String) {
+    fun getProductsFilteredByCategory(category: String, index: Int) {
+        selectedCategory = index
         viewModelScope.launch {
             try {
                 val filteredProducts: ProductsFilteredByCategoryQuery.Data = ApolloClientManager
