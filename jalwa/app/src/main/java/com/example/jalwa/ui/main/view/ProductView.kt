@@ -19,6 +19,7 @@ import com.example.jalwa.utils.RecyclerViewScrollListener
 import kotlinx.android.synthetic.main.product_view_page.*
 import kotlinx.android.synthetic.main.products.*
 import kotlinx.android.synthetic.main.top_bar_of_product_page.*
+import kotlinx.android.synthetic.main.videos_loading_progress_overlay.*
 import org.koin.android.ext.android.inject
 
 
@@ -61,10 +62,12 @@ class ProductView : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         customScrollListener()
+        progress_overlay.visibility = View.VISIBLE
         viewModel.productsObservable.observe(viewLifecycleOwner, {
             if (videoViews != null && videoViews.adapter != null) {
                 videoViews.adapter?.notifyDataSetChanged()
             }
+            progress_overlay.visibility = View.INVISIBLE
             videoViews.apply {
                 adapter = ProductsRecyclerViewAdapter(
                     activity as Activity,
@@ -86,6 +89,7 @@ class ProductView : Fragment() {
     }
 
     private fun getProductsFilteredByCategory(category: String, index: Int) {
+        progress_overlay.visibility = View.VISIBLE
         viewModel.getProductsFilteredByCategory(category, index)
     }
 

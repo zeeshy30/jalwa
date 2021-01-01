@@ -50,6 +50,7 @@ class ProductViewModel: ViewModel() {
         selectedCategory = index
         viewModelScope.launch {
             try {
+                loading.value = true
                 val filteredProducts: ProductsFilteredByCategoryQuery.Data = ApolloClientManager
                     .apolloClient
                     .suspendQuery(ProductsFilteredByCategoryQuery(category))

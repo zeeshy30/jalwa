@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/ic_red_blue_dots_00012" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00014" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00017" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00020" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00026" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00029" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00032" android:duration="100" />
+    <item android:drawable="@drawable/ic_red_blue_dots_00038" android:duration="100" />
+</animation-list>

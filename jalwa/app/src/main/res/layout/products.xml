@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <include layout="@layout/videos_loading_progress_overlay"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/videoViews"
         android:layout_width="match_parent"
