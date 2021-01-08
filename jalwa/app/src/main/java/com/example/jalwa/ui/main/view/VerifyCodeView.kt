@@ -77,7 +77,7 @@ class VerifyCodeView : Fragment() {
         setListeners()
         binding.apply {
             time = "Resend Code : 60s"
-            phoneNumber = "Enter PIN code sent to ${arguments?.getString("phoneNumber")}"
+            phoneNumber = arguments?.getString("phoneNumber")
             verifyCodeViewCallbacks = this@VerifyCodeView
             executePendingBindings()
         }

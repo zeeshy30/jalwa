@@ -23,6 +23,6 @@
     <string name="enter_your_phone_number">Enter your phone number</string>
     <string name="verify_account">Verify Account</string>
     <string name="resend_code_60s">Resend Code : 60s</string>
-    <string name="enter_pin_code_sent_to_92xxxxxxxxxx">Enter PIN code sent to +92XXXXXXXXXX</string>
+    <string name="enter_pin_code_sent_to_num">Enter PIN code sent to <strong>%s</strong></string>
     <string name="searching_relevant_videos_for_you"><b>Searching Relevant Videos For You</b></string>
 </resources>

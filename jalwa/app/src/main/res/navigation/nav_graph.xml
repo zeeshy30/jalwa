@@ -13,12 +13,12 @@
 
         <action
             android:id="@+id/action_login_signup_page"
-            app:destination="@id/LoginSingupView" />
+            app:destination="@id/LoginSignupView" />
     </fragment>
 
     <fragment
-        android:id="@+id/LoginSingupView"
-        android:name="com.example.jalwa.ui.main.view.LoginSingupView"
+        android:id="@+id/LoginSignupView"
+        android:name="com.example.jalwa.ui.main.view.LoginSignupView"
         android:label="Login Signup Page"
         tools:layout="@layout/login_signup_page">
 
@@ -39,7 +39,7 @@
 
         <action
             android:id="@+id/action_back_button"
-            app:destination="@id/LoginSingupView" />
+            app:destination="@id/LoginSignupView" />
     </fragment>
 
 </navigation>

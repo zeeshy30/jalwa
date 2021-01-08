@@ -16,6 +16,7 @@ class LoginSignupViewModel: ViewModel() {
 
     fun requestCode(phoneNumber: String){
         loading.value = true
+        isError.value = false
         viewModelScope.launch {
             try {
                 val req = RequestCodeMutation(phoneNumber)
@@ -28,6 +29,7 @@ class LoginSignupViewModel: ViewModel() {
             }
             catch (e: Exception) {
                 isError.value = true
+                loginSignupObservable.postValue(Notification.createOnError(e))
             }
             finally {
                 loading.value = false

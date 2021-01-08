@@ -3,7 +3,7 @@
     <data>
         <variable
             name="LoginSignupCallbacks"
-            type="com.example.jalwa.ui.main.view.LoginSingupView" />
+            type="com.example.jalwa.ui.main.view.LoginSignupView" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -64,6 +64,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/white"
             android:paddingHorizontal="10dp"
+            android:inputType="number"
             app:layout_constraintLeft_toRightOf="@id/countryCode"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enterNumberText" />

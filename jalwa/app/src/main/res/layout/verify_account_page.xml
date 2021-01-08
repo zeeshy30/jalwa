@@ -47,9 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="@{phoneNumber}"
+            android:text="@{String.format(@string/enter_pin_code_sent_to_num, phoneNumber)}"
             android:textColor="@color/dark_grey"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="@id/backButton"
             app:layout_constraintTop_toTopOf="@id/backButton" />
 

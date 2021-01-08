@@ -1,13 +1,16 @@
 package com.example.jalwa
 
+import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import com.example.jalwa.ui.base.getListOfModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import com.example.jalwa.ui.base.getListOfModules
+import org.koin.core.context.stopKoin
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,5 +39,17 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed()
+        }
+        return true
+    }
+
+    override fun finish() {
+        stopKoin()
+        super.finish()
     }
 }

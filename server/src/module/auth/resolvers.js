@@ -1,7 +1,4 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto-random-string';
-import moment from 'moment';
 import twilio from 'twilio';
 
 import UserModel from './user';
@@ -11,28 +8,24 @@ const twilioClient = twilio('AC19caf0660254fcea9c02d0667433fa23', '588ff60f38f57
 
 const sendVerificationCode = async (phoneNumber) => {
     try { 
-        return await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
+        await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
             .verifications
             .create({to: phoneNumber, channel: 'sms'});
     }
     catch(err) {
-        Promise.Reject(err);
-        return err;
-
+        throw new Error('Error Sending Verification Code!');
     }
 };
 
 const verifyCode = async (phoneNumber, code) => {
     try {
-        return await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
+        await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
             .verificationChecks
             .create({ to: phoneNumber, code });
     }
     catch(err) {
-        Promise.reject(err);
-        return err;
+        throw new Error('Error Verifying Code!');
     }
-        
 };
 
 const userObject = {

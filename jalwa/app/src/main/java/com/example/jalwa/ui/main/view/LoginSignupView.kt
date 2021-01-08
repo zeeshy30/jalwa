@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +15,7 @@ import com.example.jalwa.ui.main.viewmodel.LoginSignupViewModel
 import kotlinx.android.synthetic.main.login_signup_page.*
 import org.koin.android.ext.android.inject
 
-class LoginSingupView : Fragment() {
+class LoginSignupView : Fragment() {
     private val viewModel: LoginSignupViewModel by inject()
     private lateinit var binding: LoginSignupPageBinding
 
@@ -39,6 +39,7 @@ class LoginSingupView : Fragment() {
         if (viewModel.loading.value!!) {
             return
         }
+        Toast.makeText(context, "Sending Verification Code", Toast.LENGTH_SHORT).show()
         val bundle = Bundle()
         val phoneNumber = "+92${number.text}"
         bundle.putString("phoneNumber", phoneNumber)
@@ -47,7 +48,10 @@ class LoginSingupView : Fragment() {
         }
         viewModel.requestCode(phoneNumber)
         viewModel.loginSignupObservable.observe(viewLifecycleOwner, {
-            if(viewModel.isError.value != true) {
+            if (viewModel.isError.value == true) {
+                Toast.makeText(context, "Error Sending Verification Code!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Sent!", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_verify_number, bundle)
             }
         })
@@ -56,7 +60,7 @@ class LoginSingupView : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            loginSignupCallbacks = this@LoginSingupView
+            loginSignupCallbacks = this@LoginSignupView
             executePendingBindings()
         }
     }
