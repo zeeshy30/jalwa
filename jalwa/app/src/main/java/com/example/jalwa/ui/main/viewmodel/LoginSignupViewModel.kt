@@ -25,7 +25,6 @@ class LoginSignupViewModel: ViewModel() {
                     .suspendMutate(req)
                     .data!!
                 loginSignupObservable.postValue(Notification.createOnNext(data))
-                data.requestCode
             }
             catch (e: Exception) {
                 isError.value = true

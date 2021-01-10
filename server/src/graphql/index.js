@@ -11,10 +11,6 @@ export default graphqlHTTP(async request => {
             user: request.user,
             headers: request.headers,
             accessToken: request.accessToken,
-        },
-        customFormatErrorFn: (err) => {
-            console.log('errrr:', err);
-            return ({ message: err.message });
         }
     });
 });
