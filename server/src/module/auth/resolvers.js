@@ -1,32 +1,30 @@
 import jwt from 'jsonwebtoken';
-import twilio from 'twilio';
 
 import UserModel from './user';
+import { sendVerificationCodeService, verifyCodeService } from './service/index';
+// const twilioClient = twilio('AC19caf0660254fcea9c02d0667433fa23', '588ff60f38f579a293a070fccf2feaa1');
 
+// const sendVerificationCode = async (phoneNumber) => {
+//     try { 
+//         await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
+//             .verifications
+//             .create({to: phoneNumber, channel: 'sms'});
+//     }
+//     catch(err) {
+//         throw new Error('Error Sending Verification Code!');
+//     }
+// };
 
-const twilioClient = twilio('AC19caf0660254fcea9c02d0667433fa23', '588ff60f38f579a293a070fccf2feaa1');
-
-const sendVerificationCode = async (phoneNumber) => {
-    try { 
-        await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
-            .verifications
-            .create({to: phoneNumber, channel: 'sms'});
-    }
-    catch(err) {
-        throw new Error('Error Sending Verification Code!');
-    }
-};
-
-const verifyCode = async (phoneNumber, code) => {
-    try {
-        await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
-            .verificationChecks
-            .create({ to: phoneNumber, code });
-    }
-    catch(err) {
-        throw new Error('Error Verifying Code!');
-    }
-};
+// const verifyCode = async (phoneNumber, code) => {
+//     try {
+//         await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
+//             .verificationChecks
+//             .create({ to: phoneNumber, code });
+//     }
+//     catch(err) {
+//         throw new Error('Error Verifying Code!');
+//     }
+// };
 
 const userObject = {
     name: 'user',
@@ -45,12 +43,22 @@ const signIn = {
         try {
             const user = await UserModel.numberExist(phoneNumber);
             if (!user) {
-                return Promise.reject(new Error('User not found.'));
+                return {
+                    status: {
+                        statusCode: 404,
+                        message: 'Phone number not registered'
+                    }
+                };
             }
 
-            const res = await verifyCode(phoneNumber, code);
+            const res = await verifyCodeService(phoneNumber, code);
             if (res.status !== 'approved') {
-                return Promise.reject(new Error('Invalid code provided'));
+                return {
+                    status: {
+                        statusCode: 410,
+                        message: 'Invalid Verification Code'
+                    }
+                };
             }
 
             const accessToken = jwt.sign(
@@ -66,7 +74,13 @@ const signIn = {
             };
             user.save();
 
-            return { accessToken };
+            return {
+                status: {
+                    statusCode: 200,
+                    message: 'Success'
+                },
+                accessToken
+            };
         } catch (error) {
             return Promise.reject(error);
         }
@@ -75,14 +89,14 @@ const signIn = {
 
 const requestCode = {
     name: 'requestCode',
-    type: 'String!',
+    type: 'status!',
     args: {
         phoneNumber: 'String!',
     },
     resolve: async ({ args: { phoneNumber } }) => {
         try {
             let user = await UserModel.numberExist(phoneNumber);
-            await sendVerificationCode(phoneNumber);
+            await sendVerificationCodeService(phoneNumber);
 
             if (!user) {
                 user = await new UserModel({
@@ -90,47 +104,10 @@ const requestCode = {
                 }).save();
             }
 
-            return 'success!';
-        } catch (error) {
-            return Promise.reject(error);
-        }
-    }
-};
-
-const signUp = {
-    name: 'signUp',
-    type: 'AccessToken!',
-    args: {
-        phoneNumber: 'String!',
-        code: 'String!'
-    },
-    resolve: async ({ args: { phoneNumber, code } }) => {
-        try {
-            const user = await UserModel.numberExist(phoneNumber);
-            if (user && user.account.verification.verified) {
-                return Promise.reject(new Error('This number has already been registered.'));
-            }
-
-            const res = await verifyCode(phoneNumber, code);
-            if (res.status !== 'approved') {
-                return Promise.reject(new Error('Invalid code provided'));
-            }
-
-            const accessToken = jwt.sign(
-                { userId: user._id },
-                process.env.JWT_SECRET,
-            );
-
-            user.account = {
-                verification: {
-                    verified: true,
-                    token: accessToken,
-                },
+            return {
+                statusCode: 200,
+                message: 'Success'
             };
-
-            user.save();
-
-            return { accessToken };
         } catch (error) {
             return Promise.reject(error);
         }
@@ -139,7 +116,7 @@ const signUp = {
 
 const logout = {
     name: 'logout',
-    type: 'Succeed!',
+    type: 'status!',
     resolve: async ({ context: { user, accessToken } }) => {
         // try {
         //     await redis.set(
@@ -153,14 +130,17 @@ const logout = {
         // } catch (error) {
         //     return Promise.reject(error);
         // }
-        return { succeed: true };
+        return {
+            statusCode: 200,
+            message: 'Success'
+        };
     }
 };
 
 
 const updateUser = {
     name: 'updateUser',
-    type: 'User!',
+    type: 'UserResult!',
     args: { fullName: 'String!' },
     resolve: async ({ args: { fullName }, context: { user } }) => {
         try {
@@ -169,8 +149,14 @@ const updateUser = {
             });
 
             await user.save();
-
-            return user;
+            const result = {
+                status: {
+                    statusCode: 200,
+                    message: 'Success',
+                },
+                result: user
+            };
+            return result;
         } catch (error) {
             return Promise.reject(error);
         }
@@ -180,7 +166,6 @@ const updateUser = {
 export default {
     userObject,
     signIn,
-    signUp,
     requestCode,
     logout,
     updateUser,

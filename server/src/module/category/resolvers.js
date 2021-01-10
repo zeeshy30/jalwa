@@ -1,17 +1,25 @@
 import CategoryModel from './category';
+import status from '../statusSchema';
 
 const categories = {
     name: 'categories',
-    type: ['Category!'],
+    type: 'CategoriesResult!',
     resolve: async () => {
         const categoriesList = await CategoryModel.find();
-        return categoriesList;
+        const result = {
+            status: {
+                statusCode: 200,
+                message: 'Success',
+            },
+            result: categoriesList
+        };
+        return result;
     } 
 };
 
 const addCategory = {
     name: 'addCategory',
-    type: 'String!',
+    type: 'status!',
     args: {
         category: 'String!',
     },
@@ -27,7 +35,10 @@ const addCategory = {
                 category
             }).save();
 
-            return 'succeed: true';
+            return {
+                statusCode: 200,
+                message: 'Success'
+            };
         }
         catch(error) {
             return Promise.reject(error);   

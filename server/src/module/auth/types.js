@@ -2,6 +2,7 @@ import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import UserModel from './user';
+import status from '../statusSchema';
 
 const UserTC = composeWithMongoose(UserModel);
 
@@ -12,7 +13,18 @@ userAccountTC.getFieldTC('verification')
 
 schemaComposer.createObjectTC({
     name: 'AccessToken',
-    fields: { accessToken: 'String!' }
+    fields: { 
+        status,
+        accessToken: 'String' 
+    }
 });
 
-export default UserTC;
+const UserResult = schemaComposer.createObjectTC({
+    name: 'UserResult',
+    fields: { 
+        status,
+        result: userAccountTC
+    }
+});
+
+export default UserResult;

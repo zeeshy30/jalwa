@@ -5,15 +5,24 @@ class ProductValidator {
         const { photoUrl, videoUrl, price } = args;
 
         if (!validator.isURL(videoUrl)) {
-            return Promise.reject(new Error('Error: Invalid videoUrl provided'));
+            return {
+                statusCode: 422,
+                message: 'Error: Invalid videoUrl provided'
+            };
         }
 
         if (!validator.isURL(photoUrl)) {
-            return Promise.reject(new Error('Error: Invalid photoUrl provided'));
+            return {
+                statusCode: 422,
+                message: 'Error: Invalid photoUrl provided'
+            };
         }
 
         if (!validator.isNumeric(price)) {
-            return Promise.reject(new Error('Error: Invalid price provided'));
+            return {
+                statusCode: 422,
+                message: 'Error: Invalid price provided'
+            };
         }
 
         return resolve(source, args, context, info);

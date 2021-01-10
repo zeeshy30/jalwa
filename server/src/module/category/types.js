@@ -1,13 +1,17 @@
 import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
+import status from '../statusSchema';
 import CategoryModel from './category';
 
 const CategoryTC = composeWithMongoose(CategoryModel);
 
-// schemaComposer.createObjectTC({
-//     name: 'AccessToken',
-//     fields: { accessToken: 'String!' }
-// });
+const CategoriesResult = schemaComposer.createObjectTC({
+    name: 'CategoriesResult',
+    fields: { 
+        status,
+        result: [CategoryTC]
+    }
+});
 
-export default CategoryTC;
+export default CategoriesResult;

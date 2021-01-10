@@ -29,7 +29,6 @@ schemaComposer.Query.addFields({
 
 schemaComposer.Mutation.addFields({
     signIn: TC.UserTC.getResolver('signIn', [isGuest, verifyCodeValidator]),
-    signUp: TC.UserTC.getResolver('signUp', [isGuest, verifyCodeValidator]),
     requestCode: TC.UserTC.getResolver('requestCode', [requestCodeValidator]),
     logout: TC.UserTC.getResolver('logout', [isAuth]),
     updateUser: TC.UserTC.getResolver('updateUser', [isAuth, updateUserValidator]),

@@ -1,29 +1,41 @@
 import merge from 'deepmerge';
+
 import ProductModel from './product';
 import CategoryModel from '../category/category';
 
 const productsFilteredByCategory = {
     name: 'productsFilteredByCategory',
-    type: ['Product!'],
+    type: 'ProductResult!',
     args: {
         category: 'String!'
     },
     resolve: async ({ args }) => {
-        const { category } = args;
-        let productList = null;
-        if (category === 'All') {
-            productList = await ProductModel.find({});
-        } else {
-            productList = await ProductModel.find({ category });
+        try {
+            const { category } = args;
+            let productList = null;
+            if (category === 'All') {
+                productList = await ProductModel.find({});
+            } else {
+                productList = await ProductModel.find({ category });
+            }
+            
+            return {
+                status: {
+                    statusCode: 200,
+                    message: 'Success',
+                },
+                result: productList
+            };
+        } catch (error) {
+            return Promise.reject(error);
         }
-        return productList;    
         
     } 
 };
 
 const addProduct = {
     name: 'addProduct',
-    type: 'String!',
+    type: 'status!',
     args: {
         handle: 'String!',
         title: 'String!',
@@ -40,7 +52,10 @@ const addProduct = {
         try {
             const handleExists = await ProductModel.findOne({ handle });
             if (handleExists) {
-                return Promise.reject(new Error('This handle is already registered.'));
+                return {
+                    statusCode: 409,
+                    message: `A product with handle, ${handle} already exists`
+                };
             }
 
             await new ProductModel({
@@ -56,13 +71,22 @@ const addProduct = {
             }).save();
             
             const categoryExists = await CategoryModel.findOne({ category });
+
             if (!categoryExists) {
                 await new CategoryModel({
                     category
                 }).save();
+            } else {
+                return {
+                    statusCode: 409,
+                    message: `${category} already exists!`
+                };
             }
 
-            return 'succeed: true';
+            return {
+                statusCode: 200,
+                message: 'Success',
+            };
         }
         catch(error) {
             return Promise.reject(error);   
@@ -72,7 +96,7 @@ const addProduct = {
 
 const updateProduct = {
     name: 'updateProduct',
-    type: 'String!',
+    type: 'status!',
     args: {
         _id: 'String!',
         title: 'String',
@@ -85,16 +109,22 @@ const updateProduct = {
         videoUrl: 'String',
     },
     resolve: async ({ args }) => {
-        const { _id, title=null, body=null, vendor=null, category=null, tags=[], price=null, photoUrl=null, videoUrl=null } = args;
+        const { _id } = args;
         try {
             const product = await ProductModel.findById(_id);
             if (!product) {
-                return Promise.reject(new Error('Invalid product ID.'));
+                return {
+                    statusCode: 404,
+                    message: 'Product Not Found'
+                };
             }
 
             Object.assign(product, merge(product.toObject(), args));
             await product.save();
-            return 'succeed: true';
+            return {
+                statusCode: 200,
+                message: 'Success',
+            };
         }
         catch(error) {
             return Promise.reject(error);   

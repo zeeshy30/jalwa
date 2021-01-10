@@ -8,7 +8,11 @@ class UserValidator {
         Object.assign(args, { phoneNumber });
 
         if (!validator.isMobilePhone(phoneNumber)) {
-            return Promise.reject(new Error('Invalid phone number provided!'));
+            return {
+                statusCode: 422,
+                message: 'Invalid Phone Number!'
+            };
+            // return Promise.reject(new Error('Invalid phone number provided!'));
         }
 
         return resolve(source, args, context, info);
@@ -24,11 +28,17 @@ class UserValidator {
         const { code } = args;
 
         if (!validator.isMobilePhone(phoneNumber)) {
-            return Promise.reject(new Error('Invalid phone number provided!'));
+            return {
+                statusCode: 422,
+                message: 'Invalid Phone Number!'
+            };
         }
 
         if (!validator.isLength(code, { min: 4, max: 4 })) {
-            return Promise.reject(new Error('Code must be 4 digits long!'));
+            return {
+                statusCode: 422,
+                message: 'Code must be 4 digits long!'
+            };
         }
 
         return resolve(source, args, context, info);
@@ -38,7 +48,10 @@ class UserValidator {
 
         const { fullName } = args;
         if (!validator.isLength(fullName, { min: 2 })) {
-            return Promise.reject(new Error('Name must be at least 2 character long'));
+            return {
+                statusCode: 422,
+                message: 'Name must be at least 2 character long'
+            };
         }
 
         return resolve(source, args, context, info);
