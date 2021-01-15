@@ -5,7 +5,7 @@ import CategoryModel from '../category/category';
 
 const productsFilteredByCategory = {
     name: 'productsFilteredByCategory',
-    type: 'ProductResult!',
+    type: 'ProductsResult!',
     args: {
         category: 'String!'
     },
@@ -18,13 +18,9 @@ const productsFilteredByCategory = {
             } else {
                 productList = await ProductModel.find({ category });
             }
-            
             return {
-                status: {
-                    statusCode: 200,
-                    message: 'Success',
-                },
-                result: productList
+                __typename: 'Products',
+                products: productList
             };
         } catch (error) {
             return Promise.reject(error);
@@ -35,7 +31,7 @@ const productsFilteredByCategory = {
 
 const addProduct = {
     name: 'addProduct',
-    type: 'status!',
+    type: 'Status!',
     args: {
         handle: 'String!',
         title: 'String!',
@@ -52,7 +48,9 @@ const addProduct = {
         try {
             const handleExists = await ProductModel.findOne({ handle });
             if (handleExists) {
+
                 return {
+                    __typename: 'Error',
                     statusCode: 409,
                     message: `A product with handle, ${handle} already exists`
                 };
@@ -76,16 +74,11 @@ const addProduct = {
                 await new CategoryModel({
                     category
                 }).save();
-            } else {
-                return {
-                    statusCode: 409,
-                    message: `${category} already exists!`
-                };
             }
 
             return {
-                statusCode: 200,
-                message: 'Success',
+                __typename: 'Succeed',
+                succeed: true
             };
         }
         catch(error) {
@@ -96,7 +89,7 @@ const addProduct = {
 
 const updateProduct = {
     name: 'updateProduct',
-    type: 'status!',
+    type: 'Status!',
     args: {
         _id: 'String!',
         title: 'String',
@@ -113,7 +106,9 @@ const updateProduct = {
         try {
             const product = await ProductModel.findById(_id);
             if (!product) {
+
                 return {
+                    __typename: 'Error',
                     statusCode: 404,
                     message: 'Product Not Found'
                 };
@@ -122,8 +117,8 @@ const updateProduct = {
             Object.assign(product, merge(product.toObject(), args));
             await product.save();
             return {
-                statusCode: 200,
-                message: 'Success',
+                __typename: 'Succeed',
+                succeed: true
             };
         }
         catch(error) {

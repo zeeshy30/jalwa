@@ -12,19 +12,16 @@ const productSKUs = {
             const producSKUList = await ProductSKUModel.find({ handle: args.handle });
             if (producSKUList.length === 0) {
                 return {
-                    status: {
-                        statusCode: 404,
-                        message: 'SKUs not found',
-                    }
+                    __typename: 'Error',
+                    statusCode: 404,
+                    message: 'SKUs not found for the product'
                 };
             }
             return {
-                status: {
-                    statusCode: 200,
-                    message: 'Success',
-                },
-                result: producSKUList
+                __typename: 'ProductSKUs',
+                productSKUs: producSKUList
             };
+
         }
         catch (error) {
             return Promise.reject(error);
@@ -34,7 +31,7 @@ const productSKUs = {
 
 const addProductSKU = {
     name: 'addProductSKU',
-    type: 'status!',
+    type: 'Status!',
     args: {
         handle: 'String!',
         SKU: 'String!',
@@ -50,6 +47,7 @@ const addProductSKU = {
             const handleExists = await ProductModel.findOne({ handle });
             if (!handleExists) {
                 return {
+                    __typename: 'Error',
                     statusCode: 404,
                     message: `Invalid Product handle, ${handle}`
                 };
@@ -57,6 +55,7 @@ const addProductSKU = {
             const SKUexists = await ProductSKUModel.findOne({ SKU });
             if (SKUexists) {
                 return {
+                    __typename: 'Error',
                     statusCode: 409,
                     message: `${SKU} already exists`
                 };
@@ -73,8 +72,8 @@ const addProductSKU = {
             }).save();
 
             return {
-                statusCode: 200,
-                message: 'Success',
+                __typename: 'Error',
+                succeed: true,
             };
         }
         catch(error) {

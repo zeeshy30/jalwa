@@ -1,5 +1,4 @@
 import { graphqlHTTP } from 'express-graphql';
-import { printLocation } from 'graphql';
 import schema from './schema';
 
 export default graphqlHTTP(async request => {

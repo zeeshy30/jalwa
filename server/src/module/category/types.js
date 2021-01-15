@@ -1,17 +1,21 @@
 import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
-import status from '../statusSchema';
 import CategoryModel from './category';
+import { error } from '../../graphql/types';
 
 const CategoryTC = composeWithMongoose(CategoryModel);
 
-const CategoriesResult = schemaComposer.createObjectTC({
-    name: 'CategoriesResult',
-    fields: { 
-        status,
-        result: [CategoryTC]
+const CategoriesTC = schemaComposer.createObjectTC({
+    name: 'Categories',
+    fields: {
+        categories: [CategoryTC]
     }
 });
+ 
+schemaComposer.createUnionTC({
+    name: 'CategoriesResult',
+    types: [ error, CategoriesTC ],
+});
 
-export default CategoriesResult;
+export default CategoriesTC;

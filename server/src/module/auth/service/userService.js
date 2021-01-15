@@ -25,23 +25,27 @@ class UserService {
 
     sendVerificationCode = async (phoneNumber) => {
         try { 
-            await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
+            return await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
                 .verifications
                 .create({to: phoneNumber, channel: 'sms'});
         }
         catch(err) {
-            throw new Error('Error Sending Verification Code!');
+            return {
+                status: 'rejected'
+            };
         }
     };
     
     verifyCode = async (phoneNumber, code) => {
         try {
-            await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
+            return await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
                 .verificationChecks
                 .create({ to: phoneNumber, code });
         }
         catch(err) {
-            throw new Error('Error Verifying Code!');
+            return {
+                status: 'rejected'
+            };
         }
     };
 

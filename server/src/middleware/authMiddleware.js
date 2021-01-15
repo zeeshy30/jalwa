@@ -4,10 +4,9 @@ class AuthMiddleware {
 
         if (!user) {
             return {
-                status: {
-                    statusCode: 401,
-                    message: 'You must be authorized.'
-                }
+                __typename: 'Error',
+                statusCode: 401,
+                message: 'You must be authorized.'
             };
         }
 
@@ -19,10 +18,9 @@ class AuthMiddleware {
   
         if (user) {
             return {
-                status: {
-                    statusCode: 406,
-                    message: 'You have already authorized.'
-                }
+                __typename: 'Error',
+                statusCode: 406,
+                message: 'You have already authorized.'
             };
         }
         return resolve(source, args, context, info);

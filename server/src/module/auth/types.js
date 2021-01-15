@@ -2,7 +2,7 @@ import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import UserModel from './user';
-import status from '../statusSchema';
+import { error } from '../../graphql/types';
 
 const UserTC = composeWithMongoose(UserModel);
 
@@ -11,20 +11,21 @@ const userAccountTC = UserTC.getFieldTC('account');
 userAccountTC.getFieldTC('verification')
     .removeField(['token']);
 
-schemaComposer.createObjectTC({
+const accessToken = schemaComposer.createObjectTC({
     name: 'AccessToken',
     fields: { 
-        status,
         accessToken: 'String' 
     }
 });
 
-const UserResult = schemaComposer.createObjectTC({
+schemaComposer.createUnionTC({
     name: 'UserResult',
-    fields: { 
-        status,
-        result: userAccountTC
-    }
+    types: [ error, userAccountTC ],
 });
 
-export default UserResult;
+schemaComposer.createUnionTC({
+    name: 'SignIn',
+    types: [error, accessToken]
+});
+
+export default userAccountTC;

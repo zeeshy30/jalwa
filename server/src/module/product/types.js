@@ -1,17 +1,22 @@
 import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
-import status from '../statusSchema';
 import ProductModel from './product';
+import { error } from '../../graphql/types';
 
 const ProductTC = composeWithMongoose(ProductModel);
 
-const productTCResult = schemaComposer.createObjectTC({
-    name: 'ProductResult',
-    fields: { 
-        status,
-        result: [ProductTC]
+const productsTC = schemaComposer.createObjectTC({
+    name: 'Products',
+    fields: {
+        products: [ProductTC]
     }
 });
 
-export default productTCResult;
+ 
+schemaComposer.createUnionTC({
+    name: 'ProductsResult',
+    types: [ error, productsTC ],
+});
+
+export default productsTC;

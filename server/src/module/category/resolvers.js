@@ -1,25 +1,24 @@
 import CategoryModel from './category';
-import status from '../statusSchema';
 
 const categories = {
     name: 'categories',
     type: 'CategoriesResult!',
     resolve: async () => {
-        const categoriesList = await CategoryModel.find();
-        const result = {
-            status: {
-                statusCode: 200,
-                message: 'Success',
-            },
-            result: categoriesList
-        };
-        return result;
+        try {
+            const categoriesList = await CategoryModel.find();
+            return {
+                __typename: 'Categories',
+                categories: categoriesList
+            };
+        } catch(e) {
+            return Promise.reject(e);
+        }
     } 
 };
 
 const addCategory = {
     name: 'addCategory',
-    type: 'status!',
+    type: 'Status!',
     args: {
         category: 'String!',
     },
@@ -28,7 +27,11 @@ const addCategory = {
         try {
             const categoryExists = await CategoryModel.findOne({ category });
             if (categoryExists) {
-                return Promise.reject(new Error('This category already exists.'));
+                return  {
+                    __typename: 'Error',
+                    statusCode: 409,
+                    message: 'This category already exists.'
+                };
             }
 
             await new CategoryModel({
@@ -36,8 +39,8 @@ const addCategory = {
             }).save();
 
             return {
-                statusCode: 200,
-                message: 'Success'
+                __typename: 'Succeed',
+                succeed: true
             };
         }
         catch(error) {

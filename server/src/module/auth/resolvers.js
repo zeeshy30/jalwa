@@ -2,39 +2,21 @@ import jwt from 'jsonwebtoken';
 
 import UserModel from './user';
 import { sendVerificationCodeService, verifyCodeService } from './service/index';
-// const twilioClient = twilio('AC19caf0660254fcea9c02d0667433fa23', '588ff60f38f579a293a070fccf2feaa1');
-
-// const sendVerificationCode = async (phoneNumber) => {
-//     try { 
-//         await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
-//             .verifications
-//             .create({to: phoneNumber, channel: 'sms'});
-//     }
-//     catch(err) {
-//         throw new Error('Error Sending Verification Code!');
-//     }
-// };
-
-// const verifyCode = async (phoneNumber, code) => {
-//     try {
-//         await twilioClient.verify.services('VAbf29bba1e0990cecb48079b88d422b1d')
-//             .verificationChecks
-//             .create({ to: phoneNumber, code });
-//     }
-//     catch(err) {
-//         throw new Error('Error Verifying Code!');
-//     }
-// };
 
 const userObject = {
     name: 'user',
-    type: 'User!',
-    resolve: ({ context: { user } }) => user
+    type: 'UserResult!',
+    resolve: ({ context: { user } }) => {
+        return {
+            typename: 'User',
+            user
+        };
+    }
 };
 
 const signIn = {
     name: 'signIn',
-    type: 'AccessToken!',
+    type: 'SignIn!',
     args: {
         phoneNumber: 'String!',
         code: 'String!'
@@ -43,21 +25,19 @@ const signIn = {
         try {
             const user = await UserModel.numberExist(phoneNumber);
             if (!user) {
-                return {
-                    status: {
-                        statusCode: 404,
-                        message: 'Phone number not registered'
-                    }
+                return  {
+                    __typename: 'Error',
+                    statusCode: 404,
+                    message: 'Phone number not registered'
                 };
             }
 
             const res = await verifyCodeService(phoneNumber, code);
             if (res.status !== 'approved') {
                 return {
-                    status: {
-                        statusCode: 410,
-                        message: 'Invalid Verification Code'
-                    }
+                    __typename: 'Error',
+                    statusCode: 410,
+                    message: 'Invalid Verification Code'
                 };
             }
 
@@ -75,10 +55,7 @@ const signIn = {
             user.save();
 
             return {
-                status: {
-                    statusCode: 200,
-                    message: 'Success'
-                },
+                __typename: 'AccessToken',
                 accessToken
             };
         } catch (error) {
@@ -89,7 +66,7 @@ const signIn = {
 
 const requestCode = {
     name: 'requestCode',
-    type: 'status!',
+    type: 'Status!',
     args: {
         phoneNumber: 'String!',
     },
@@ -105,8 +82,8 @@ const requestCode = {
             }
 
             return {
-                statusCode: 200,
-                message: 'Success'
+                __typename: 'Succeed',
+                succeed: true,
             };
         } catch (error) {
             return Promise.reject(error);
@@ -116,7 +93,7 @@ const requestCode = {
 
 const logout = {
     name: 'logout',
-    type: 'status!',
+    type: 'Status!',
     resolve: async ({ context: { user, accessToken } }) => {
         // try {
         //     await redis.set(
@@ -131,8 +108,7 @@ const logout = {
         //     return Promise.reject(error);
         // }
         return {
-            statusCode: 200,
-            message: 'Success'
+            succeed: true
         };
     }
 };
@@ -149,14 +125,10 @@ const updateUser = {
             });
 
             await user.save();
-            const result = {
-                status: {
-                    statusCode: 200,
-                    message: 'Success',
-                },
-                result: user
+            return {
+                __typename: 'User',
+                user
             };
-            return result;
         } catch (error) {
             return Promise.reject(error);
         }
