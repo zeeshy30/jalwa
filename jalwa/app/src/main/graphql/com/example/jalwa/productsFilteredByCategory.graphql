@@ -1,14 +1,22 @@
 query productsFilteredByCategory($category: String!) {
     productsFilteredByCategory(category: $category) {
-        _id
-        handle
-        title
-        body
-        vendor
-        category
-        tags
-        price
-        photoUrl
-        videoUrl
+        ...on Error {
+            statusCode,
+            message
+        }
+        ...on Products {
+            products {
+                _id,
+                handle,
+                title,
+                body,
+                vendor,
+                category,
+                tags,
+                price,
+                photoUrl,
+                videoUrl
+            }
+        }
     }
 }

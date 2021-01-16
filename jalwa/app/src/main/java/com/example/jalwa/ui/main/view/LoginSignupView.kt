@@ -48,8 +48,8 @@ class LoginSignupView : Fragment() {
         }
         viewModel.requestCode(phoneNumber)
         viewModel.loginSignupObservable.observe(viewLifecycleOwner, {
-            if (viewModel.isError.value == true) {
-                Toast.makeText(context, "Error Sending Verification Code!", Toast.LENGTH_SHORT).show()
+            if (it.isOnError) {
+                Toast.makeText(context, it.error.message, Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Sent!", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_verify_number, bundle)

@@ -190,13 +190,13 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
         arguments?.getString("handle")?.let { viewModel.getProductDetails(it) }
         viewModel.productSKUsObservable.observe(viewLifecycleOwner, {
             if(viewModel.isError.value != true) {
-                it.value.productSKUs?.forEach { productSKU ->
-                    if (productSKU.variant1 != "" && productSKU.variant1 != null) {
+                it.value.forEach { productSKU ->
+                    if (productSKU?.variant1 != "" && productSKU?.variant1 != null) {
                         variantType1 = productSKU.variantType1!!
                         variant1Set.add(productSKU.variant1)
                         plus.alpha = 0.5f
                     }
-                    if (productSKU.variant2 != "" && productSKU.variant2 != null) {
+                    if (productSKU?.variant2 != "" && productSKU?.variant2 != null) {
                         variantType2 = productSKU.variantType2!!
                         variant2Set.add(productSKU.variant2)
                     }

@@ -71,7 +71,7 @@ class ProductView : Fragment() {
             videoViews.apply {
                 adapter = ProductsRecyclerViewAdapter(
                     activity as Activity,
-                    viewModel.productList as ArrayList<ProductsFilteredByCategoryQuery.ProductsFilteredByCategory>,
+                    viewModel.productList,
                     this@ProductView
                 )
             }
@@ -80,7 +80,7 @@ class ProductView : Fragment() {
         viewModel.categoriesObservable.observe(viewLifecycleOwner, {
             categories.apply {
                 adapter = CategoriesRecyclerViewAdapter(
-                    viewModel.categoryList as ArrayList<CategoriesQuery.Category>,
+                    viewModel.categoryList,
                     ::getProductsFilteredByCategory,
                     viewModel.selectedCategory
                 )

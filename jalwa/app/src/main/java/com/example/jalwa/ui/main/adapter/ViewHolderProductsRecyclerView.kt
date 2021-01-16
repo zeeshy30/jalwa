@@ -11,7 +11,7 @@ import com.example.jalwa.utils.PlayerViewAdapter
 class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding)
     : RecyclerView.ViewHolder(binding.root) {
     private lateinit var productsRecyclerViewAdapter: ProductsRecyclerViewAdapter
-    private lateinit var product: ProductsFilteredByCategoryQuery.ProductsFilteredByCategory
+    private lateinit var product: ProductsFilteredByCategoryQuery.Product
     fun openBottomSheet() {
         val supportFragmentManager = (productsRecyclerViewAdapter.getContext() as AppCompatActivity).supportFragmentManager
         val bundle = Bundle()
@@ -28,7 +28,7 @@ class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding
     }
 
     fun bind(
-        productModel: ProductsFilteredByCategoryQuery.ProductsFilteredByCategory,
+        productModel: ProductsFilteredByCategoryQuery.Product,
         productsRecyclerViewAdapter: ProductsRecyclerViewAdapter
     ) {
         this.product = productModel
@@ -36,7 +36,11 @@ class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding
         binding.apply {
             callback = productsRecyclerViewAdapter
             index = adapterPosition
-            product = productModel
+            title = productModel.title
+            price = productModel.price
+            videoUrl = productModel.videoUrl
+            photoUrl = productModel.photoUrl
+            vendorName = productModel.vendor
             openDetailSheet = this@ViewHolderProductsRecyclerView
             executePendingBindings()
         }

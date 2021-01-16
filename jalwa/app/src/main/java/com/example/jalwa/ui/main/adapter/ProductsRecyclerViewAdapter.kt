@@ -19,7 +19,7 @@ import kotlin.properties.Delegates
 
 class ProductsRecyclerViewAdapter(
     private val context: Context,
-    private val products: ArrayList<ProductsFilteredByCategoryQuery.ProductsFilteredByCategory>,
+    private val products: ArrayList<ProductsFilteredByCategoryQuery.Product?>,
     private val productView: ProductView
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ExoPlayerStateCallback {
     private var currentPosition by Delegates.notNull<Int>()
@@ -42,7 +42,7 @@ class ProductsRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val product = products[position]
+        val product = products[position]!!
         currentPosition = position
         val obj = holder as ViewHolderProductsRecyclerView?
         obj?.bind(product, this@ProductsRecyclerViewAdapter)

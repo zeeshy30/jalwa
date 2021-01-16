@@ -1,3 +1,11 @@
 mutation requestCode($phoneNumber: String!) {
-    requestCode(phoneNumber: $phoneNumber)
+    requestCode(phoneNumber: $phoneNumber) {
+        ...on Error {
+            statusCode
+            message
+        }
+        ...on Succeed{
+            succeed
+        }
+    }
 }

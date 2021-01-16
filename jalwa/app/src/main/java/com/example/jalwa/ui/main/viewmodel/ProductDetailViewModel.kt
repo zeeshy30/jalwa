@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 class ProductDetailViewModel: ViewModel() {
     val loading = MutableLiveData(false)
     val isError = MutableLiveData(false)
-    val productSKUs: ArrayList<Any> = arrayListOf()
-    val productSKUsObservable: MutableLiveData<Notification<GetProductSKUsQuery.Data>> = MutableLiveData()
+    val productSKUs: ArrayList<GetProductSKUsQuery.ProductSKU?> = arrayListOf()
+    val productSKUsObservable: MutableLiveData<Notification<ArrayList<GetProductSKUsQuery.ProductSKU?>>> = MutableLiveData()
 
     fun getProductDetails(handle: String){
         loading.value = true
@@ -24,8 +24,13 @@ class ProductDetailViewModel: ViewModel() {
                     .apolloClient
                     .suspendQuery(req)
                     .data!!
-                data.productSKUs?.let { productSKUs.addAll(it) }
-                productSKUsObservable.postValue(Notification.createOnNext(data))
+                if (data.productSKUs.__typename == "Error") {
+                    isError.value = true
+                    val message = data.productSKUs.asError?.message
+                    productSKUsObservable.postValue(Notification.createOnError(Throwable(message)))
+                }
+                data.productSKUs.asProductSKUs?.productSKUs?.let { productSKUs.addAll(it) }
+                productSKUsObservable.postValue(Notification.createOnNext(productSKUs))
             }
             catch (e: Exception) {
                 isError.value = true

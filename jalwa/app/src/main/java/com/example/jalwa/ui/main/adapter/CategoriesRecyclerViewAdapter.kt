@@ -10,7 +10,7 @@ import com.example.jalwa.databinding.CategoryButtonBinding
 import com.example.jalwa.utils.PlayerViewAdapter
 
 class CategoriesRecyclerViewAdapter(
-    private val categories: ArrayList<CategoriesQuery.Category>,
+    private val categories: ArrayList<CategoriesQuery.Category?>,
     private val getProductsFilteredByCategory: (String, Int) -> Unit,
     private var selectedCategory: Int
 ) :
@@ -34,11 +34,11 @@ class CategoriesRecyclerViewAdapter(
         val category = categories[position]
         val obj = holder as ViewHolderCategoriesRecyclerView?
         obj?.categoryButton?.isSelected = selectedCategory == position
-        obj?.bind(category)
+        obj?.bind(category!!)
         obj?.categoryButton?.setOnClickListener {
             previousSelectedIndex = selectedCategory
             selectedCategory = position
-            getProductsFilteredByCategory(category.category, position)
+            getProductsFilteredByCategory(category!!.category, position)
             PlayerViewAdapter.releaseAllPlayers()
             notifyItemChanged(previousSelectedIndex)
             notifyItemChanged(selectedCategory)

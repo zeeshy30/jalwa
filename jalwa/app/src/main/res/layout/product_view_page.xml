@@ -10,8 +10,20 @@
             name="index"
             type="int" />
         <variable
-            name="product"
-            type="com.example.jalwa.ProductsFilteredByCategoryQuery.ProductsFilteredByCategory" />
+            name="vendorName"
+            type="String" />
+        <variable
+            name="videoUrl"
+            type="String" />
+        <variable
+            name="photoUrl"
+            type="String" />
+        <variable
+            name="price"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
         <variable
             name="openDetailSheet"
             type="com.example.jalwa.ui.main.adapter.ViewHolderProductsRecyclerView" />
@@ -28,7 +40,7 @@
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:video_url="@{product.videoUrl}"
+            app:video_url="@{videoUrl}"
             app:on_state_change="@{callback}"
             app:index="@{index}"
             app:show_buffering="always"
@@ -52,7 +64,7 @@
             android:letterSpacing="0.05"
             android:background="@drawable/ic_background_black_round_with_opacity"
             android:layout_marginTop="70dp"
-            android:text="@{product.vendor}"
+            android:text="@{vendorName}"
             app:layout_constraintStart_toStartOf="@id/floatingButton"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Vendor"/>
@@ -101,7 +113,7 @@
                 android:layout_width="70dp"
                 android:layout_height="100dp"
                 android:background="@drawable/ic_background_white_round"
-                app:photoUrl="@{product.photoUrl}" />
+                app:photoUrl="@{photoUrl}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/info"
@@ -114,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="@{product.title}"
+                    android:text="@{title}"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:letterSpacing="0.01"
@@ -130,7 +142,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:letterSpacing="0.02"
-                    android:text="@{`Rs. ` + product.price}"
+                    android:text="@{`Rs. ` + price}"
                     app:layout_constraintVertical_bias="0.3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productTitle"

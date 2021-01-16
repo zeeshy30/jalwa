@@ -12,33 +12,40 @@ import kotlinx.coroutines.launch
 
 class ProductViewModel: ViewModel() {
     val loading = MutableLiveData(true)
-    val isError = MutableLiveData<Boolean>()
-    val productList: ArrayList<Any> = arrayListOf()
-    val categoryList: ArrayList<Any> = arrayListOf()
-    val productsObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
-    val categoriesObservable: MutableLiveData<Notification<ArrayList<Any>>> = MutableLiveData()
+    val isErrorFetchingProducts = MutableLiveData<Boolean>()
+    val isErrorFetchingCategories = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String>()
+    val productList: ArrayList<ProductsFilteredByCategoryQuery.Product?> = arrayListOf()
+    val categoryList: ArrayList<CategoriesQuery.Category?> = arrayListOf()
+    val productsObservable:
+            MutableLiveData<Notification<ArrayList<ProductsFilteredByCategoryQuery.Product?>>> = MutableLiveData()
+    val categoriesObservable: MutableLiveData<Notification<ArrayList<CategoriesQuery.Category?>>> = MutableLiveData()
     var selectedCategory = 0
     init {
         val category = CategoriesQuery.Category(category = "All")
         categoryList.add(category)
+        getProductsFilteredByCategory("All", 0)
         viewModelScope.launch {
             try {
-                val filteredProducts: ProductsFilteredByCategoryQuery.Data = ApolloClientManager
-                    .apolloClient
-                    .suspendQuery(ProductsFilteredByCategoryQuery("All"))
-                    .data!!
-                filteredProducts.productsFilteredByCategory?.let { productList.addAll(it) }
-                productsObservable.postValue(Notification.createOnNext(productList))
-
                 val categoriesQueryData: CategoriesQuery.Data = ApolloClientManager
                     .apolloClient
                     .suspendQuery(CategoriesQuery())
                     .data!!
-                categoriesQueryData.categories?.let { categoryList.addAll(it) }
-                categoriesObservable.postValue(Notification.createOnNext(categoryList))
+                if (categoriesQueryData.categories?.__typename == "Error") {
+                    isErrorFetchingCategories.value = true
+                    val message = categoriesQueryData.categories.asError?.message
+                    categoriesObservable.postValue(Notification.createOnError(Throwable(message)))
+                } else {
+                    categoriesQueryData.categories.asCategories?.categories.let {
+                        if (it != null) {
+                            categoryList.addAll(it)
+                        }
+                        categoriesObservable.postValue(Notification.createOnNext(categoryList))
+                    }
+                }
             }
             catch (e: Exception) {
-                isError.value = true
+                isErrorFetchingCategories.value = true
             }
             finally {
                 loading.value = false
@@ -56,10 +63,20 @@ class ProductViewModel: ViewModel() {
                     .suspendQuery(ProductsFilteredByCategoryQuery(category))
                     .data!!
                 productList.clear()
-                filteredProducts.productsFilteredByCategory?.let { productList.addAll(it) }
-                productsObservable.postValue(Notification.createOnNext(productList))
+                if (filteredProducts.productsFilteredByCategory?.__typename == "Error") {
+                    isErrorFetchingProducts.value = true
+                    val message = filteredProducts.productsFilteredByCategory.asError?.message
+                    productsObservable.postValue(Notification.createOnError(Throwable(message)))
+                } else {
+                    filteredProducts.productsFilteredByCategory.asProducts?.products.let {
+                        if (it != null) {
+                            productList.addAll(it)
+                        }
+                        productsObservable.postValue(Notification.createOnNext(productList))
+                    }
+                }
             } catch (e: Exception) {
-                isError.value = true
+                isErrorFetchingProducts.value = true
             } finally {
                 loading.value = false
             }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class LoginSignupViewModel: ViewModel() {
     val loading = MutableLiveData(false)
     val isError = MutableLiveData(false)
-    val loginSignupObservable: MutableLiveData<Notification<RequestCodeMutation.Data>> = MutableLiveData()
+    val loginSignupObservable: MutableLiveData<Notification<Boolean>> = MutableLiveData()
 
     fun requestCode(phoneNumber: String){
         loading.value = true
@@ -24,7 +24,13 @@ class LoginSignupViewModel: ViewModel() {
                     .apolloClient
                     .suspendMutate(req)
                     .data!!
-                loginSignupObservable.postValue(Notification.createOnNext(data))
+                if (data.requestCode.__typename == "Error") {
+                    isError.value = true
+                    val message = data.requestCode.asError?.message
+                    loginSignupObservable.postValue(Notification.createOnError(Throwable(message)))
+                } else {
+                    loginSignupObservable.postValue(Notification.createOnNext(data.requestCode.asSucceed?.succeed))
+                }
             }
             catch (e: Exception) {
                 isError.value = true
