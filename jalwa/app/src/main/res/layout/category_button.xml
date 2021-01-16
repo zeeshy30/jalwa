@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/categoryButton"
@@ -20,14 +21,15 @@
             android:minWidth="0dp"
             android:background="@drawable/category_selector"
             android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:text="@{categoryName}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="All"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
