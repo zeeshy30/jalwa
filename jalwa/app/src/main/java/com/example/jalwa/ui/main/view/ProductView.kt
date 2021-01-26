@@ -64,7 +64,8 @@ class ProductView : Fragment() {
         customScrollListener()
         progress_overlay.visibility = View.VISIBLE
         viewModel.productsObservable.observe(viewLifecycleOwner, {
-            if (videoViews != null && videoViews.adapter != null) {
+            currentPosition = 0
+            if (videoViews != null) {
                 videoViews.adapter?.notifyDataSetChanged()
             }
             progress_overlay.visibility = View.INVISIBLE
