@@ -11,7 +11,7 @@ class OptionsRecyclerViewAdapter(
     private val options: MutableSet<String>,
     private val selectVariant: (String) -> Unit,
     private val variantFiltered: MutableSet<String>
-    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var selectedIndex = -1
     private var previousSelectedIndex = -1
     override fun getItemCount(): Int {
@@ -32,10 +32,11 @@ class OptionsRecyclerViewAdapter(
         val option = options.elementAt(position)
         val obj = holder as ViewHolderOptionsRecyclerView?
         obj?.variantButton?.isSelected = position == selectedIndex
-        obj?.variantButton?.isActivated = if (variantFiltered.isEmpty()) true else variantFiltered.contains(option)
+        obj?.variantButton?.isActivated =
+            if (variantFiltered.isEmpty()) true else variantFiltered.contains(option)
         obj?.bind(option)
         obj?.variantButton?.setOnClickListener {
-            if (obj?.variantButton?.isActivated) {
+            if (obj.variantButton.isActivated) {
                 selectVariant(option)
                 previousSelectedIndex = selectedIndex
                 selectedIndex = position

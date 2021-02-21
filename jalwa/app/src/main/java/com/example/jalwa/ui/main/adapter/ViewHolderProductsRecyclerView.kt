@@ -8,12 +8,13 @@ import com.example.jalwa.databinding.ProductViewPageBinding
 import com.example.jalwa.ui.main.view.ProductDetailBottomSheet
 import com.example.jalwa.utils.PlayerViewAdapter
 
-class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding)
-    : RecyclerView.ViewHolder(binding.root) {
+class ViewHolderProductsRecyclerView(private val binding: ProductViewPageBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     private lateinit var productsRecyclerViewAdapter: ProductsRecyclerViewAdapter
     private lateinit var product: ProductsFilteredByCategoryQuery.Product
     fun openBottomSheet() {
-        val supportFragmentManager = (productsRecyclerViewAdapter.getContext() as AppCompatActivity).supportFragmentManager
+        val supportFragmentManager =
+            (productsRecyclerViewAdapter.getContext() as AppCompatActivity).supportFragmentManager
         val bundle = Bundle()
         PlayerViewAdapter.pauseCurrentPlayingVideo()
         bundle.putString("photoUrl", product.photoUrl)

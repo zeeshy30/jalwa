@@ -1,16 +1,16 @@
 package com.example.jalwa.ui.main.viewmodel
 
-import io.reactivex.rxjava3.core.Notification
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jalwa.CategoriesQuery
 import com.example.jalwa.ProductsFilteredByCategoryQuery
 import com.example.jalwa.data.api.ApolloClientManager
 import com.example.jalwa.data.api.suspendQuery
+import io.reactivex.rxjava3.core.Notification
 import kotlinx.coroutines.launch
 
-class ProductViewModel: ViewModel() {
+class ProductViewModel : ViewModel() {
     val loading = MutableLiveData(true)
     val isErrorFetchingProducts = MutableLiveData<Boolean>()
     val isErrorFetchingCategories = MutableLiveData<Boolean>()
@@ -18,9 +18,12 @@ class ProductViewModel: ViewModel() {
     val productList: ArrayList<ProductsFilteredByCategoryQuery.Product?> = arrayListOf()
     val categoryList: ArrayList<CategoriesQuery.Category?> = arrayListOf()
     val productsObservable:
-            MutableLiveData<Notification<ArrayList<ProductsFilteredByCategoryQuery.Product?>>> = MutableLiveData()
-    val categoriesObservable: MutableLiveData<Notification<ArrayList<CategoriesQuery.Category?>>> = MutableLiveData()
+            MutableLiveData<Notification<ArrayList<ProductsFilteredByCategoryQuery.Product?>>> =
+        MutableLiveData()
+    val categoriesObservable: MutableLiveData<Notification<ArrayList<CategoriesQuery.Category?>>> =
+        MutableLiveData()
     var selectedCategory = 0
+
     init {
         val category = CategoriesQuery.Category(category = "All")
         categoryList.add(category)
@@ -31,7 +34,7 @@ class ProductViewModel: ViewModel() {
                     .apolloClient
                     .suspendQuery(CategoriesQuery())
                     .data!!
-                if (categoriesQueryData.categories?.__typename == "Error") {
+                if (categoriesQueryData.categories.__typename == "Error") {
                     isErrorFetchingCategories.value = true
                     val message = categoriesQueryData.categories.asError?.message
                     categoriesObservable.postValue(Notification.createOnError(Throwable(message)))
@@ -43,11 +46,9 @@ class ProductViewModel: ViewModel() {
                         categoriesObservable.postValue(Notification.createOnNext(categoryList))
                     }
                 }
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 isErrorFetchingCategories.value = true
-            }
-            finally {
+            } finally {
                 loading.value = false
             }
         }
@@ -63,7 +64,7 @@ class ProductViewModel: ViewModel() {
                     .suspendQuery(ProductsFilteredByCategoryQuery(category))
                     .data!!
                 productList.clear()
-                if (filteredProducts.productsFilteredByCategory?.__typename == "Error") {
+                if (filteredProducts.productsFilteredByCategory.__typename == "Error") {
                     isErrorFetchingProducts.value = true
                     val message = filteredProducts.productsFilteredByCategory.asError?.message
                     productsObservable.postValue(Notification.createOnError(Throwable(message)))

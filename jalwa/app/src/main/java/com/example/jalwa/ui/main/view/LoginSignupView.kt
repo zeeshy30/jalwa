@@ -27,7 +27,8 @@ class LoginSignupView : Fragment() {
             inflater,
             R.layout.login_signup_page,
             container,
-            false)
+            false
+        )
         return binding.root
     }
 

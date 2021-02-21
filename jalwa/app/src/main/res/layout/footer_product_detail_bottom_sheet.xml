@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="productDetailBottomSheetCallBacks"
             type="com.example.jalwa.ui.main.view.ProductDetailBottomSheet" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,16 +20,16 @@
             android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
-            android:text="@string/add_to_cart"
-            android:textSize="14sp"
-            android:textColor="@color/blue"
             android:background="@drawable/ic_background_only_border_blue_round"
-            android:paddingHorizontal="30dp"
             android:onClick="@{() -> productDetailBottomSheetCallBacks.addToCart()}"
-            app:layout_constraintTop_toTopOf="parent"
+            android:paddingHorizontal="30dp"
+            android:text="@string/add_to_cart"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buyNow"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buyNow"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buyNow"
@@ -35,15 +37,15 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
+            android:background="@drawable/ic_background_blue_round"
+            android:onClick="@{() -> productDetailBottomSheetCallBacks.buyNow()}"
+            android:paddingHorizontal="30dp"
             android:text="@string/buy_now"
             android:textColor="@color/white"
-            android:background="@drawable/ic_background_blue_round"
-            android:paddingHorizontal="30dp"
-            android:onClick="@{() -> productDetailBottomSheetCallBacks.buyNow()}"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/addToCart"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

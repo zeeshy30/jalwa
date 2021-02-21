@@ -2,14 +2,11 @@ package com.example.jalwa.ui.main.view
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
-import com.example.jalwa.CategoriesQuery
-import com.example.jalwa.ProductsFilteredByCategoryQuery
 import com.example.jalwa.R
 import com.example.jalwa.ui.main.adapter.CategoriesRecyclerViewAdapter
 import com.example.jalwa.ui.main.adapter.ProductsRecyclerViewAdapter

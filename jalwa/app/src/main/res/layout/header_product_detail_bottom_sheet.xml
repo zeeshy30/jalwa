@@ -2,66 +2,71 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="price"
             type="String" />
+
         <variable
             name="photoUrl"
             type="String" />
     </data>
+
     <LinearLayout
         android:id="@+id/floatingButton"
         android:layout_width="match_parent"
         android:layout_height="94dp"
         android:background="@drawable/ic_background_light_grey_round"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/productImage"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
             android:background="@color/light_grey"
-            app:photoUrl="@{photoUrl}"/>
+            android:scaleType="centerCrop"
+            app:photoUrl="@{photoUrl}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/info"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingLeft="10dp">
 
             <TextView
                 android:id="@+id/productTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="@{title}"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:lineSpacingMultiplier="1.2"
                 android:letterSpacing="0.01"
+                android:lineSpacingMultiplier="1.2"
+                android:maxLines="2"
+                android:text="@{title}"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Star Moon Shaped Necklace - 100% comfortable Quality &amp; Finish"/>
+                tools:text="Star Moon Shaped Necklace - 100% comfortable Quality &amp; Finish" />
 
             <TextView
                 android:id="@+id/productPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{price}"
                 android:fontFamily="sans-serif-black"
-                android:textSize="18sp"
-                android:textColor="@color/black"
                 android:letterSpacing="0.02"
-                app:layout_constraintVertical_bias="0.3"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@{price}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.3"
                 tools:text="Rs. 100" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

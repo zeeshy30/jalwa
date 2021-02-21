@@ -6,7 +6,6 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,14 +20,15 @@ class VerifyCodeView : Fragment() {
     private lateinit var binding: VerifyAccountPageBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.verify_account_page,
             container,
-            false)
+            false
+        )
         return binding.root
     }
 
@@ -56,12 +56,12 @@ class VerifyCodeView : Fragment() {
     }
 
     private fun startTimer() {
-        val countdownTimer = object : CountDownTimer(60000 , 1000) {
+        val countdownTimer = object : CountDownTimer(60000, 1000) {
             override fun onFinish() {
             }
 
             override fun onTick(p0: Long) {
-                val timeLeft = (p0/1000).toString()
+                val timeLeft = (p0 / 1000).toString()
                 updateTime(timeLeft)
             }
         }

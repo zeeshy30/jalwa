@@ -1,21 +1,22 @@
 package com.example.jalwa.ui.main.viewmodel
 
-import io.reactivex.rxjava3.core.Notification
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jalwa.data.api.ApolloClientManager
 import com.example.jalwa.GetProductSKUsQuery
+import com.example.jalwa.data.api.ApolloClientManager
 import com.example.jalwa.data.api.suspendQuery
+import io.reactivex.rxjava3.core.Notification
 import kotlinx.coroutines.launch
 
-class ProductDetailViewModel: ViewModel() {
+class ProductDetailViewModel : ViewModel() {
     val loading = MutableLiveData(false)
     val isError = MutableLiveData(false)
     val productSKUs: ArrayList<GetProductSKUsQuery.ProductSKU?> = arrayListOf()
-    val productSKUsObservable: MutableLiveData<Notification<ArrayList<GetProductSKUsQuery.ProductSKU?>>> = MutableLiveData()
+    val productSKUsObservable: MutableLiveData<Notification<ArrayList<GetProductSKUsQuery.ProductSKU?>>> =
+        MutableLiveData()
 
-    fun getProductDetails(handle: String){
+    fun getProductDetails(handle: String) {
         loading.value = true
         viewModelScope.launch {
             try {
@@ -31,11 +32,9 @@ class ProductDetailViewModel: ViewModel() {
                 }
                 data.productSKUs.asProductSKUs?.productSKUs?.let { productSKUs.addAll(it) }
                 productSKUsObservable.postValue(Notification.createOnNext(productSKUs))
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 isError.value = true
-            }
-            finally {
+            } finally {
                 loading.value = false
             }
         }

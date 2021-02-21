@@ -9,21 +9,21 @@ import com.squareup.picasso.Picasso
 
 class PlayerViewAdapter {
 
-    companion object{
-        private var playersMap: MutableMap<Int, SimpleExoPlayer>  = mutableMapOf()
+    companion object {
+        private var playersMap: MutableMap<Int, SimpleExoPlayer> = mutableMapOf()
         private var currentPlayingVideo: Pair<Int, SimpleExoPlayer>? = null
-        fun releaseAllPlayers(){
+        fun releaseAllPlayers() {
             playersMap.map {
                 it.value.release()
             }
         }
 
-        fun releaseRecycledPlayers(index: Int){
+        fun releaseRecycledPlayers(index: Int) {
             playersMap[index]?.release()
         }
 
-        fun pauseCurrentPlayingVideo(seekToStart: Boolean = false){
-            if (currentPlayingVideo != null){
+        fun pauseCurrentPlayingVideo(seekToStart: Boolean = false) {
+            if (currentPlayingVideo != null) {
                 if (seekToStart) {
                     currentPlayingVideo?.second?.seekTo(0)
                 }
@@ -31,13 +31,13 @@ class PlayerViewAdapter {
             }
         }
 
-        fun playCurrentPlayingVideo(){
-            if (currentPlayingVideo != null){
+        fun playCurrentPlayingVideo() {
+            if (currentPlayingVideo != null) {
                 currentPlayingVideo?.second?.playWhenReady = true
             }
         }
 
-        fun playIndexThenPausePreviousPlayer(index: Int){
+        fun playIndexThenPausePreviousPlayer(index: Int) {
             if (playersMap[index]?.playWhenReady == false) {
                 pauseCurrentPlayingVideo(true)
                 playersMap[index]?.playWhenReady = true

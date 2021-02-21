@@ -1,9 +1,9 @@
 package com.example.jalwa.ui.main.adapter
 
-import com.example.jalwa.R
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jalwa.CategoriesQuery
+import com.example.jalwa.R
 import com.example.jalwa.databinding.CategoryButtonBinding
 
 class ViewHolderCategoriesRecyclerView(private val binding: CategoryButtonBinding) :

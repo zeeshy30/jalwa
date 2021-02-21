@@ -1,14 +1,10 @@
 package com.example.jalwa.ui.main.viewmodel
 
-import io.reactivex.rxjava3.core.Notification
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.jalwa.data.api.ApolloClientManager
-import com.example.jalwa.data.api.suspendQuery
-import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.core.Notification
 
-class VerifyCodeViewModel: ViewModel() {
+class VerifyCodeViewModel : ViewModel() {
     val loading = MutableLiveData(true)
     val isError = MutableLiveData<Boolean>()
     var list: ArrayList<Any> = arrayListOf()

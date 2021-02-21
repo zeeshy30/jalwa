@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="time"
             type="String" />
+
         <variable
             name="phoneNumber"
             type="String" />
+
         <variable
             name="verifyCodeViewCallbacks"
             type="com.example.jalwa.ui.main.view.VerifyCodeView" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -40,7 +44,7 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/enterPinText"
@@ -60,14 +64,14 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/ic_background_only_border_dark_grey_round"
             android:gravity="center"
-            android:textColor="@color/primary_text_color"
             android:inputType="number"
             android:maxLength="1"
+            android:textColor="@color/primary_text_color"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/secondDigit"
             app:layout_constraintTop_toBottomOf="@id/enterPinText"
-            tools:text="1"/>
+            tools:text="1" />
 
         <EditText
             android:id="@+id/secondDigit"
@@ -83,7 +87,7 @@
             app:layout_constraintLeft_toRightOf="@id/firstDigit"
             app:layout_constraintRight_toLeftOf="@id/thirdDigit"
             app:layout_constraintTop_toBottomOf="@id/enterPinText"
-            tools:text="2"/>
+            tools:text="2" />
 
         <EditText
             android:id="@+id/thirdDigit"
@@ -94,12 +98,12 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="1"
-            android:textStyle="bold"
             android:textColor="@color/primary_text_color"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/secondDigit"
             app:layout_constraintRight_toLeftOf="@id/fourthDigit"
             app:layout_constraintTop_toBottomOf="@id/enterPinText"
-            tools:text="3"/>
+            tools:text="3" />
 
         <EditText
             android:id="@+id/fourthDigit"
@@ -110,12 +114,12 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="1"
-            android:textStyle="bold"
             android:textColor="@color/primary_text_color"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/thirdDigit"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enterPinText"
-            tools:text="4"/>
+            tools:text="4" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -134,11 +138,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:background="@drawable/ic_background_blue_round"
+            android:fitsSystemWindows="true"
             android:letterSpacing="0.12"
+            android:onClick="@{() -> verifyCodeViewCallbacks.proceedButtonClick()}"
             android:text="@string/proceed"
             android:textColor="@color/white"
-            android:fitsSystemWindows="true"
-            android:onClick="@{() -> verifyCodeViewCallbacks.proceedButtonClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

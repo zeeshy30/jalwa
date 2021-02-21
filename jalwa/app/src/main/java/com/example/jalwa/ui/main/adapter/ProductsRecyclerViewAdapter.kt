@@ -2,12 +2,11 @@ package com.example.jalwa.ui.main.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.example.jalwa.R
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jalwa.ProductsFilteredByCategoryQuery
+import com.example.jalwa.R
 import com.example.jalwa.databinding.ProductViewPageBinding
 import com.example.jalwa.ui.main.view.ProductView
 import com.example.jalwa.utils.ExoPlayerStateCallback
@@ -25,9 +24,10 @@ class ProductsRecyclerViewAdapter(
     private var currentPosition by Delegates.notNull<Int>()
     private lateinit var binding: ProductViewPageBinding
 
-    fun getContext (): Context {
+    fun getContext(): Context {
         return context
     }
+
     override fun getItemCount(): Int {
         return products.size
     }

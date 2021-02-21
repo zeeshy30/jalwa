@@ -52,10 +52,11 @@ class AutoFillRecyclerView @JvmOverloads constructor(
     }
 }
 
-class ProductDetailBottomSheet: BottomSheetDialogFragment() {
+class ProductDetailBottomSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "ProductDetailBottomSheet"
     }
+
     private val viewModel: ProductDetailViewModel by inject()
 
     private var variantQuantity = 1
@@ -119,7 +120,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
                 max = (viewModel.productSKUs[0] as GetProductSKUsQuery.ProductSKU).quantity.toInt()
             }
         }
-        if (variantQuantity < max ) {
+        if (variantQuantity < max) {
             minus.alpha = 1f
             variantQuantity += 1
             binding.buyQuantity = variantQuantity.toString()
@@ -189,7 +190,7 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
     private fun getProductSKUs() {
         arguments?.getString("handle")?.let { viewModel.getProductDetails(it) }
         viewModel.productSKUsObservable.observe(viewLifecycleOwner, {
-            if(viewModel.isError.value != true) {
+            if (viewModel.isError.value != true) {
                 it.value.forEach { productSKU ->
                     if (productSKU?.variant1 != "" && productSKU?.variant1 != null) {
                         variantType1 = productSKU.variantType1!!
@@ -210,7 +211,11 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
                     option1.visibility = View.GONE
                 } else {
                     options1.apply {
-                        adapter = OptionsRecyclerViewAdapter(variant1Set, ::selectVariant1, variant1SetFiltered)
+                        adapter = OptionsRecyclerViewAdapter(
+                            variant1Set,
+                            ::selectVariant1,
+                            variant1SetFiltered
+                        )
                     }
                 }
                 if (variant2Set.isEmpty()) {
@@ -218,7 +223,11 @@ class ProductDetailBottomSheet: BottomSheetDialogFragment() {
                     option2.visibility = View.GONE
                 } else {
                     options2.apply {
-                        adapter = OptionsRecyclerViewAdapter(variant2Set, ::selectVariant2, variant2SetFiltered)
+                        adapter = OptionsRecyclerViewAdapter(
+                            variant2Set,
+                            ::selectVariant2,
+                            variant2SetFiltered
+                        )
                     }
                 }
             }

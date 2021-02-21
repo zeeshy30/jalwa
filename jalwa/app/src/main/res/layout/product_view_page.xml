@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="callback"
             type="com.example.jalwa.utils.ExoPlayerStateCallback" />
+
         <variable
             name="index"
             type="int" />
+
         <variable
             name="vendorName"
             type="String" />
+
         <variable
             name="videoUrl"
             type="String" />
+
         <variable
             name="photoUrl"
             type="String" />
+
         <variable
             name="price"
             type="String" />
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="openDetailSheet"
             type="com.example.jalwa.ui.main.adapter.ViewHolderProductsRecyclerView" />
+
         <variable
             name="progressBarVisibility"
             type="int" />
@@ -37,20 +46,21 @@
         android:layout_height="match_parent"
         android:background="@color/black"
         tools:context=".ui.main.view.ProductView">
+
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:video_url="@{videoUrl}"
-            app:on_state_change="@{callback}"
-            app:index="@{index}"
-            app:show_buffering="always"
-            app:rewind_increment="10000"
             app:fastforward_increment="10000"
-            app:layout_constraintTop_toTopOf="parent"
+            app:index="@{index}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:on_state_change="@{callback}"
+            app:rewind_increment="10000"
+            app:show_buffering="always"
+            app:video_url="@{videoUrl}">
 
         </com.google.android.exoplayer2.ui.PlayerView>
 
@@ -59,16 +69,16 @@
             android:id="@+id/vendor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:paddingVertical="7dp"
-            android:paddingHorizontal="10dp"
-            android:letterSpacing="0.05"
-            android:background="@drawable/ic_background_black_round_with_opacity"
             android:layout_marginTop="70dp"
+            android:background="@drawable/ic_background_black_round_with_opacity"
+            android:letterSpacing="0.05"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp"
             android:text="@{vendorName}"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/floatingButton"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Vendor"/>
+            tools:text="Vendor" />
 
         <include
             android:id="@+id/shoppingCart"
@@ -103,67 +113,67 @@
             android:layout_height="96dp"
             android:layout_margin="15dp"
             android:background="@drawable/ic_background_white_round"
-            android:padding="9dp"
             android:orientation="horizontal"
+            android:padding="9dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
                 android:id="@+id/productImage"
                 android:layout_width="64dp"
                 android:layout_height="80dp"
-                android:scaleType="centerCrop"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_background_white_round"
+                android:scaleType="centerCrop"
                 app:photoUrl="@{photoUrl}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/info"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:paddingLeft="10dp">
 
                 <TextView
                     android:id="@+id/productTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/secondary_text_color"
-                    android:text="@{title}"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:text="@{title}"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="this is the title"/>
+                    tools:text="this is the title" />
 
                 <TextView
                     android:id="@+id/productPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
                     android:letterSpacing="0.02"
                     android:text="@{`Rs. ` + price}"
-                    app:layout_constraintVertical_bias="0.3"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@id/buyNowProduct"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productTitle"
-                    app:layout_constraintBottom_toTopOf="@id/buyNowProduct"
-                    tools:text="Rs 1000"/>
+                    app:layout_constraintVertical_bias="0.3"
+                    tools:text="Rs 1000" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buyNowProduct"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="@string/buy_now"
-                    android:letterSpacing="0.1"
-                    android:textSize="14sp"
-                    android:textColor="@color/white"
                     android:background="@drawable/ic_background_blue_round"
+                    android:letterSpacing="0.1"
                     android:onClick="@{() -> openDetailSheet.openBottomSheet()}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    android:text="@string/buy_now"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
